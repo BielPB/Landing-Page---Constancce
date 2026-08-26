@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090b0a" />
+  <meta name="description" content="Constancce App — hábitos, treinos, finanças, metas, tarefas, amigos e progresso em um único lugar." />
+  <title>Constancce App — Sua evolução. Todos os dias.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+</head>
+
+<body>
+  <div class="ambient ambient-1"></div>
+  <div class="ambient ambient-2"></div>
+
+  <header class="topbar" id="topbar">
+    <div class="container nav">
+      <a class="brand" href="#inicio" aria-label="Constancce App">
+        <span class="brand-mark">C</span>
+        <span>CONSTANCCE</span>
+      </a>
+      <a class="nav-cta js-checkout" href="#oferta">Começar agora</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- QUIZ -->
+    <section class="quiz-shell" id="inicio">
+      <div class="container quiz-wrap">
+        <div class="quiz-intro" id="quizIntro">
+          <div class="eyebrow">TRIAGEM DE 60 SEGUNDOS</div>
+          <h1>Você está evoluindo ou só tentando <span>não ficar para trás?</span></h1>
+          <p>Descubra o que pode estar impedindo você de manter constância e enxergar o seu próprio progresso.</p>
+
+          <div class="quiz-proof">
+            <div><strong>5</strong><span>perguntas</span></div>
+            <div><strong>&lt; 1 min</strong><span>para responder</span></div>
+            <div><strong>1</strong><span>diagnóstico</span></div>
+          </div>
+
+          <button class="btn btn-primary btn-large" id="startQuiz">
+            Começar o teste
+            <span aria-hidden="true">→</span>
+          </button>
+          <small>Sem cadastro. Resposta imediata.</small>
+        </div>
+
+        <div class="quiz-card hidden" id="quizCard" aria-live="polite">
+          <div class="quiz-head">
+            <span id="quizCounter">Pergunta 1 de 5</span>
+            <span id="quizPercent">20%</span>
+          </div>
+          <div class="progress-track"><div class="progress-bar" id="quizProgress"></div></div>
+
+          <div id="questionMount"></div>
+
+          <button class="text-button hidden" id="quizBack">← Voltar</button>
+        </div>
+
+        <div class="quiz-result hidden" id="quizResult">
+          <div class="result-icon">✓</div>
+          <div class="eyebrow">SEU DIAGNÓSTICO</div>
+          <h2 id="resultTitle">Talvez o seu problema nunca tenha sido falta de motivação.</h2>
+          <p id="resultText"></p>
+
+          <div class="result-box">
+            <span>O ponto central</span>
+            <strong>Você não precisa depender da sensação de que está indo bem. Precisa conseguir enxergar.</strong>
+          </div>
+
+          <button class="btn btn-primary btn-large" id="unlockPage">
+            Descobrir como funciona
+            <span aria-hidden="true">↓</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTEÚDO REVELADO APÓS O QUIZ -->
+    <div id="landingContent" class="landing-content is-locked" aria-hidden="true">
+
+      <!-- VSL -->
+      <section class="section vsl-section" id="vsl">
+        <div class="container narrow center">
+          <div class="eyebrow">ASSISTA ANTES DE CONTINUAR</div>
+          <h2>Você não precisa de mais um aplicativo.</h2>
+          <h3>Você precisa enxergar a sua evolução acontecendo.</h3>
+          <p>Conheça o sistema criado para transformar pequenas ações diárias em progresso visível.</p>
+
+          <div class="video-frame" id="videoFrame">
+            <div class="video-glow"></div>
+            <div class="video-placeholder">
+              <button class="play" id="playVsl" aria-label="Reproduzir VSL">▶</button>
+              <strong>VSL CONSTANCCE</strong>
+              <span>Substitua este bloco pelo seu vídeo final</span>
+            </div>
+          </div>
+
+          <a class="btn btn-primary btn-large js-checkout" href="#oferta">Quero começar agora</a>
+          <div class="microcopy">Pagamento único • Acesso após confirmação</div>
+        </div>
+      </section>
+
+      <!-- TRANSIÇÃO -->
+      <section class="section section-dark">
+        <div class="container split intro-split">
+          <div>
+            <div class="eyebrow">UM SISTEMA. VÁRIAS ÁREAS.</div>
+            <h2>Pare de organizar sua vida em <span>cinco lugares diferentes.</span></h2>
+          </div>
+          <div>
+            <p>Menos aplicativos. Menos informação espalhada. Menos coisas dependendo da sua memória.</p>
+            <p class="lead-highlight">Mais clareza para responder uma pergunta simples: <strong>você está avançando ou não?</strong></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section class="section features-section" id="recursos">
+        <div class="container">
+          <div class="section-head center">
+            <div class="eyebrow">TUDO CONECTADO</div>
+            <h2>Acompanhe as áreas que movem a sua vida.</h2>
+            <p>O Constancce reúne execução, registro e progresso em uma experiência simples.</p>
+          </div>
+
+          <div class="feature-list">
+            <article class="feature-row">
+              <div class="feature-copy">
+                <div class="feature-kicker">01 · HOJE</div>
+                <h3>Abra o app e saiba exatamente o que precisa ser feito.</h3>
+                <p>Hábitos, tarefas, compromissos e evolução diária em uma única visão.</p>
+                <ul>
+                  <li>Prioridades do dia</li>
+                  <li>Tarefas e lembretes</li>
+                  <li>Visão rápida de execução</li>
+                </ul>
+              </div>
+              <div class="phone-mockup" data-screen="hoje">
+                <div class="phone-notch"></div>
+                <div class="screen">
+                  <div class="screen-top"><span>Hoje</span><b>🔥 12</b></div>
+                  <div class="hello">Bom dia 👋<br><strong>Seu dia começa aqui.</strong></div>
+                  <div class="screen-card">
+                    <span>Hábitos</span>
+                    <b>3 de 5 concluídos</b>
+                    <div class="mini-progress"><i style="width:60%"></i></div>
+                  </div>
+                  <div class="screen-card">
+                    <span>Próxima tarefa</span>
+                    <b>Revisar planejamento</b>
+                    <small>14:30</small>
+                  </div>
+                  <div class="screen-nav">Hoje · Treinos · Hábitos · Finanças · Perfil</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="feature-row reverse">
+              <div class="feature-copy">
+                <div class="feature-kicker">02 · HÁBITOS</div>
+                <h3>Constância deixa rastros.</h3>
+                <p>Crie os hábitos que deseja desenvolver e transforme cada dia concluído em parte do seu histórico.</p>
+                <ul>
+                  <li>Sequências de dias</li>
+                  <li>Subtarefas</li>
+                  <li>Acompanhamento diário</li>
+                </ul>
+              </div>
+              <div class="phone-mockup" data-screen="habitos">
+                <div class="phone-notch"></div>
+                <div class="screen">
+                  <div class="screen-top"><span>Hábitos</span><b>Semana 34</b></div>
+                  <div class="habit-item"><i>✓</i><div><b>Beber 2L de água</b><span>12 dias seguidos</span></div></div>
+                  <div class="habit-item"><i>✓</i><div><b>Leitura</b><span>8 dias seguidos</span></div></div>
+                  <div class="habit-item pending"><i>○</i><div><b>Alongamento</b><span>Hoje</span></div></div>
+                  <div class="streak-box"><span>Maior sequência</span><strong>21 dias 🔥</strong></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="feature-row">
+              <div class="feature-copy">
+                <div class="feature-kicker">03 · TREINOS</div>
+                <h3>Pare de apenas treinar. Comece a acompanhar.</h3>
+                <p>Organize treinos, exercícios e execução sem transformar sua academia em uma planilha complicada.</p>
+                <ul>
+                  <li>Treinos organizados</li>
+                  <li>Exercícios por treino</li>
+                  <li>Registro simples de execução</li>
+                </ul>
+              </div>
+              <div class="phone-mockup" data-screen="treinos">
+                <div class="phone-notch"></div>
+                <div class="screen">
+                  <div class="screen-top"><span>Treinos</span><b>+ Novo</b></div>
+                  <div class="workout-card"><span>Treino A</span><strong>Peito + Tríceps</strong><small>6 exercícios · 48 min</small></div>
+                  <div class="exercise"><span>Supino reto</span><b>4 × 10</b></div>
+                  <div class="exercise"><span>Crucifixo</span><b>3 × 12</b></div>
+                  <div class="exercise"><span>Tríceps corda</span><b>4 × 12</b></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="feature-row reverse">
+              <div class="feature-copy">
+                <div class="feature-kicker">04 · FINANÇAS</div>
+                <h3>Seu dinheiro também precisa de constância.</h3>
+                <p>Registre entradas e gastos e entenda como as decisões de hoje afetam as metas de amanhã.</p>
+                <ul>
+                  <li>Entradas e despesas</li>
+                  <li>Saldo atualizado</li>
+                  <li>Visão de movimentação</li>
+                </ul>
+              </div>
+              <div class="phone-mockup" data-screen="financas">
+                <div class="phone-notch"></div>
+                <div class="screen">
+                  <div class="screen-top"><span>Finanças</span><b>Agosto</b></div>
+                  <div class="balance"><span>Saldo atual</span><strong>R$ 3.840,50</strong><small>+ R$ 620 este mês</small></div>
+                  <div class="money-row"><i>↑</i><div><b>Entrada</b><span>Projeto</span></div><strong>+ R$ 1.500</strong></div>
+                  <div class="money-row expense"><i>↓</i><div><b>Saída</b><span>Academia</span></div><strong>- R$ 119</strong></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="feature-row">
+              <div class="feature-copy">
+                <div class="feature-kicker">05 · METAS</div>
+                <h3>Tire seus objetivos da cabeça. Coloque progresso neles.</h3>
+                <p>Transforme uma meta distante em etapas visíveis e veja claramente quanto já avançou.</p>
+                <ul>
+                  <li>Objetivos personalizados</li>
+                  <li>Percentual de conclusão</li>
+                  <li>Histórico visual</li>
+                </ul>
+              </div>
+              <div class="phone-mockup" data-screen="metas">
+                <div class="phone-notch"></div>
+                <div class="screen">
+                  <div class="screen-top"><span>Metas</span><b>2026</b></div>
+                  <div class="goal-card"><span>Reserva financeira</span><strong>68%</strong><div class="mini-progress"><i style="width:68%"></i></div><small>R$ 6.800 de R$ 10.000</small></div>
+                  <div class="goal-card"><span>Ler 20 livros</span><strong>55%</strong><div class="mini-progress"><i style="width:55%"></i></div><small>11 de 20 livros</small></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="feature-row reverse">
+              <div class="feature-copy">
+                <div class="feature-kicker">06 · PROGRESSO</div>
+                <h3>Talvez você esteja evoluindo mais do que imagina.</h3>
+                <p>O Constancce transforma ações em histórico para que você compare a única pessoa que realmente importa.</p>
+                <div class="big-line">Você de hoje <span>×</span> você de ontem.</div>
+              </div>
+              <div class="progress-visual">
+                <div class="pv-top">
+                  <span>Seu progresso</span>
+                  <strong>+24%</strong>
+                </div>
+                <div class="bars">
+                  <i style="height:34%"></i><i style="height:45%"></i><i style="height:41%"></i>
+                  <i style="height:57%"></i><i style="height:63%"></i><i style="height:72%"></i>
+                  <i style="height:82%"></i><i style="height:92%"></i>
+                </div>
+                <div class="pv-stats">
+                  <div><span>Hábitos</span><b>86%</b></div>
+                  <div><span>Treinos</span><b>14</b></div>
+                  <div><span>Metas</span><b>4/6</b></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOCIAL -->
+      <section class="section social-section">
+        <div class="container">
+          <div class="social-card">
+            <div>
+              <div class="eyebrow">AMIGOS + CONQUISTAS</div>
+              <h2>Evoluir sozinho funciona. Evoluir acompanhado pode ser ainda melhor.</h2>
+              <p>Adicione amigos, acompanhe pessoas próximas e valorize pequenas vitórias que, com o tempo, se tornam parte de quem você é.</p>
+            </div>
+            <div class="achievement-stack">
+              <div class="achievement"><span>🔥</span><div><b>30 dias</b><small>Constância desbloqueada</small></div></div>
+              <div class="achievement"><span>🏆</span><div><b>Meta concluída</b><small>Mais um passo registrado</small></div></div>
+              <div class="achievement"><span>🤝</span><div><b>Amigos</b><small>Evolução acompanhada</small></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPARAÇÃO -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head center">
+            <div class="eyebrow">CENTRALIZE</div>
+            <h2>Várias áreas. Um único app.</h2>
+          </div>
+          <div class="compare-grid">
+            <div class="compare-card bad">
+              <span class="compare-label">ANTES</span>
+              <h3>Sua rotina espalhada.</h3>
+              <ul>
+                <li>Aplicativo de hábitos</li>
+                <li>Planilha de treino</li>
+                <li>Planilha financeira</li>
+                <li>Bloco de notas</li>
+                <li>Aplicativo de tarefas</li>
+                <li>Metas esquecidas</li>
+              </ul>
+            </div>
+            <div class="compare-arrow">→</div>
+            <div class="compare-card good">
+              <span class="compare-label">COM CONSTANCCE</span>
+              <h3>Sua evolução centralizada.</h3>
+              <div class="pill-grid">
+                <span>Hábitos</span><span>Treinos</span><span>Finanças</span><span>Metas</span>
+                <span>Tarefas</span><span>Amigos</span><span>Progresso</span><span>Conquistas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROVA SOCIAL PLACEHOLDER -->
+      <section class="section section-dark">
+        <div class="container">
+          <div class="section-head center">
+            <div class="eyebrow">PROVA SOCIAL</div>
+            <h2>Use somente depoimentos reais.</h2>
+            <p>Deixamos o bloco pronto para você inserir os primeiros relatos dos usuários sem inventar avaliações.</p>
+          </div>
+          <div class="testimonial-grid">
+            <div class="testimonial placeholder"><span>01</span><p>“Insira aqui um depoimento real sobre constância ou organização.”</p><small>Nome do usuário</small></div>
+            <div class="testimonial placeholder"><span>02</span><p>“Insira aqui um depoimento real sobre centralizar várias áreas no Constancce.”</p><small>Nome do usuário</small></div>
+            <div class="testimonial placeholder"><span>03</span><p>“Insira aqui um depoimento real sobre conseguir visualizar o progresso.”</p><small>Nome do usuário</small></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PREÇO -->
+      <section class="section offer-section" id="oferta">
+        <div class="container narrow">
+          <div class="offer-card">
+            <div class="offer-badge">OFERTA DE LANÇAMENTO</div>
+            <h2>Acesso vitalício ao Constancce App</h2>
+            <p>Um sistema para acompanhar sua evolução sem precisar contratar várias ferramentas separadas.</p>
+
+            <div class="offer-includes">
+              <span>✓ Hábitos</span>
+              <span>✓ Treinos</span>
+              <span>✓ Finanças</span>
+              <span>✓ Metas</span>
+              <span>✓ Tarefas</span>
+              <span>✓ Amigos</span>
+              <span>✓ Progresso</span>
+              <span>✓ Conquistas</span>
+            </div>
+
+            <div class="price">
+              <span class="old-price">De R$ 497,00</span>
+              <div><small>por</small><strong>R$ 37,90</strong></div>
+              <b>pagamento único</b>
+            </div>
+
+            <a class="btn btn-primary btn-large btn-full js-checkout" href="#" id="mainCheckout">
+              Quero garantir meu acesso
+              <span>→</span>
+            </a>
+
+            <div class="secure-row">
+              <span>🔒 Pagamento seguro</span>
+              <span>⚡ Acesso após confirmação</span>
+              <span>✓ 7 dias de garantia*</span>
+            </div>
+            <small class="legal-note">*Conforme as condições aplicáveis à oferta e à compra.</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- URGÊNCIA SEM CONTADOR FALSO -->
+      <section class="section center urgency">
+        <div class="container narrow">
+          <div class="eyebrow">O TEMPO CONTINUA PASSANDO</div>
+          <h2>Mais um mês vai passar.</h2>
+          <p>Quando ele terminar, você vai conseguir mostrar o quanto evoluiu?</p>
+          <h3>Você não precisa esperar segunda-feira. Pode registrar o primeiro dia hoje.</h3>
+          <a class="btn btn-secondary btn-large js-checkout" href="#oferta">Começar minha evolução</a>
+        </div>
+      </section>
+
+      <!-- TIMELINE -->
+      <section class="section section-dark">
+        <div class="container">
+          <div class="section-head center">
+            <div class="eyebrow">EVOLUÇÃO VISÍVEL</div>
+            <h2>Imagine o que pode acontecer quando você continua.</h2>
+          </div>
+          <div class="timeline">
+            <div><strong>7</strong><span>dias</span><p>Você começa a criar ritmo.</p></div>
+            <div><strong>30</strong><span>dias</span><p>Sua rotina começa a deixar histórico.</p></div>
+            <div><strong>90</strong><span>dias</span><p>Você já consegue comparar quem começou com quem continuou.</p></div>
+            <div><strong>180</strong><span>dias</span><p>O que exigia esforço começa a fazer parte da rotina.</p></div>
+            <div><strong>365</strong><span>dias</span><p>Você tem uma história inteira de evolução registrada.</p></div>
+          </div>
+          <h3 class="timeline-question">Quanto você conseguiria mudar em 365 dias de constância?</h3>
+        </div>
+      </section>
+
+      <!-- PARA QUEM É -->
+      <section class="section">
+        <div class="container split audience">
+          <div class="audience-card yes">
+            <div class="eyebrow">É PARA VOCÊ SE...</div>
+            <h2>Você quer transformar intenção em acompanhamento.</h2>
+            <ul>
+              <li>Começa projetos e tem dificuldade para continuar</li>
+              <li>Quer desenvolver hábitos melhores</li>
+              <li>Quer organizar seus treinos</li>
+              <li>Quer controlar melhor seu dinheiro</li>
+              <li>Tem metas importantes</li>
+              <li>Quer centralizar a rotina</li>
+              <li>Gosta de acompanhar números e progresso</li>
+            </ul>
+          </div>
+          <div class="audience-card no">
+            <div class="eyebrow">NÃO É PARA VOCÊ SE...</div>
+            <h2>Você procura um aplicativo que execute por você.</h2>
+            <p>O Constancce organiza, registra, lembra, mostra e acompanha.</p>
+            <p>Mas existe uma parte que nenhum aplicativo pode fazer por você:</p>
+            <strong>EXECUTAR.</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section faq-section" id="faq">
+        <div class="container narrow">
+          <div class="section-head center">
+            <div class="eyebrow">DÚVIDAS FREQUENTES</div>
+            <h2>Antes de começar.</h2>
+          </div>
+
+          <div class="faq">
+            <details>
+              <summary>O pagamento é mensal?</summary>
+              <p>Não na oferta de acesso vitalício. O pagamento é realizado uma única vez, conforme as condições apresentadas no momento da compra.</p>
+            </details>
+            <details>
+              <summary>Posso criar meus próprios hábitos?</summary>
+              <p>Sim. Você pode estruturar hábitos de acordo com aquilo que deseja desenvolver e acompanhar a execução ao longo dos dias.</p>
+            </details>
+            <details>
+              <summary>Posso organizar meus treinos?</summary>
+              <p>Sim. O Constancce permite cadastrar e organizar treinos e visualizar os exercícios correspondentes a cada um.</p>
+            </details>
+            <details>
+              <summary>O Constancce possui controle financeiro?</summary>
+              <p>Sim. Você pode registrar movimentações e acompanhar suas finanças dentro do próprio aplicativo.</p>
+            </details>
+            <details>
+              <summary>Posso cadastrar metas?</summary>
+              <p>Sim. Você pode registrar objetivos e acompanhar o avanço até a conclusão.</p>
+            </details>
+            <details>
+              <summary>Posso adicionar amigos?</summary>
+              <p>Sim. O Constancce possui recursos sociais para conectar usuários e tornar a jornada mais acompanhada.</p>
+            </details>
+            <details>
+              <summary>Vou receber futuras melhorias?</summary>
+              <p>O Constancce continuará evoluindo. Melhorias compatíveis com o seu plano poderão ser disponibilizadas conforme forem lançadas.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- GARANTIA -->
+      <section class="section guarantee">
+        <div class="container narrow center">
+          <div class="guarantee-icon">7</div>
+          <div class="eyebrow">DIAS PARA CONHECER</div>
+          <h2>Entre. Explore. Use. Decida.</h2>
+          <p>Crie hábitos, cadastre metas, organize seus treinos e veja se o sistema faz sentido para sua rotina.</p>
+          <p class="legal-note">A garantia deve seguir exatamente as condições exibidas no checkout e a legislação aplicável.</p>
+          <a class="btn btn-primary btn-large js-checkout" href="#oferta">Quero conhecer o Constancce</a>
+        </div>
+      </section>
+
+      <!-- FINAL -->
+      <section class="section final-cta">
+        <div class="container narrow center">
+          <div class="eyebrow">DAQUI A 365 DIAS...</div>
+          <h2>Você estará em algum lugar.</h2>
+          <h3>A pergunta é: <span>quanto terá evoluído até lá?</span></h3>
+          <p>Você pode continuar começando e parando ou começar hoje a registrar a história da pessoa que está construindo.</p>
+          <div class="final-brand">CONSTANCCE</div>
+          <div class="final-tagline">Sua evolução. Todos os dias.</div>
+          <a class="btn btn-primary btn-large js-checkout" href="#oferta">Começar agora por R$ 37,90</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <div class="brand"><span class="brand-mark">C</span><span>CONSTANCCE</span></div>
+      <p>© 2026 Constancce App. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <div class="mobile-sticky hidden" id="mobileSticky">
+    <div><span>Acesso vitalício</span><strong>R$ 37,90</strong></div>
+    <a class="btn btn-primary js-checkout" href="#oferta">Começar</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
