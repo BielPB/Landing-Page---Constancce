@@ -1,112 +1,129 @@
-# Constancce App — Landing Page
+# Constancce App — Landing Page com VSL Gate 70% + BASIC/PRO
 
-Landing page responsiva em PT-BR, estruturada como:
+## Funil implementado
 
-1. Triagem / Quiz de 5 perguntas
+1. Quiz de 5 perguntas
 2. Diagnóstico personalizado
-3. VSL
-4. Explicação do produto
-5. Recursos principais
-6. Amigos + Conquistas
-7. Comparação "antes x Constancce"
-8. Prova social (placeholders — usar somente relatos reais)
-9. Oferta vitalícia de R$ 37,90
-10. Urgência sem contador artificial
-11. Timeline de evolução
-12. Para quem é / para quem não é
-13. FAQ
-14. Garantia
-15. CTA final
+3. Liberação exclusiva da VSL
+4. Restante da página fica totalmente oculto
+5. Ao atingir 70% realmente assistido, o restante é liberado automaticamente
+6. Apresentação do produto
+7. Dois planos: BASIC gratuito e PRO vitalício
+8. FAQ, garantia e CTAs
 
-## Arquivos
+## Como funciona o bloqueio da VSL
 
-- `index.html` — estrutura
-- `styles.css` — identidade visual e responsividade
-- `script.js` — quiz, diagnóstico, VSL, checkout e eventos
-- `assets/` — coloque aqui os prints reais do app, logo e outros arquivos
+A página não usa apenas o `currentTime` do vídeo no modo HTML5. Ela soma os intervalos realmente reproduzidos (`video.played`), evitando que apenas arrastar a barra para 70% libere o conteúdo.
 
-## O que editar primeiro
+No YouTube, o código acompanha o maior ponto assistido e impede saltos grandes para frente antes da parte já vista.
 
-Abra `script.js` e edite:
+Ao atingir 70%, são liberados:
+
+- Recursos
+- Benefícios
+- Prova social
+- Planos BASIC e PRO
+- FAQ
+- Garantia
+- CTA final
+- Rodapé
+- CTA fixo no mobile
+
+A liberação é salva no navegador com `localStorage` para não bloquear novamente o mesmo usuário em uma recarga posterior.
+
+## Configuração principal
+
+Edite `script.js`:
 
 ```js
 const CONSTANCCE_CONFIG = {
-  checkoutUrl: "",
-  vslEmbedUrl: "",
-  metaPixelId: "",
-  gaMeasurementId: ""
+  basicUrl: "",
+  proCheckoutUrl: "",
+  vslProvider: "html5",
+  vslUrl: "",
+  youtubeVideoId: "",
+  unlockAt: 0.70,
+  devMode: false
 };
 ```
 
-### Checkout
-
-Exemplo:
+### Opção 1 — MP4/WebM direto
 
 ```js
-checkoutUrl: "https://seu-checkout.com/constancce"
+vslProvider: "html5",
+vslUrl: "assets/vsl.mp4"
 ```
 
-Todos os botões com a classe `.js-checkout` passarão a abrir esse link.
+Coloque o vídeo na pasta `assets`.
 
-### VSL
-
-Use uma URL de incorporação (embed), por exemplo do Vimeo, YouTube, Panda ou player compatível:
+### Opção 2 — YouTube
 
 ```js
-vslEmbedUrl: "https://player..."
+vslProvider: "youtube",
+youtubeVideoId: "SEU_ID_AQUI"
 ```
 
-### Prints reais do app
+Use apenas o ID do vídeo, não a URL completa.
 
-A versão entregue possui mockups em CSS para funcionar sem imagens.
+### Outros players (Panda, Vimeo, etc.)
 
-Para usar prints reais, salve as imagens em `assets/` e substitua os blocos `.phone-mockup` no `index.html` por:
+Cada player possui sua própria API de progresso. Para medir 70% de forma real, a integração precisa usar a API oficial do player escolhido. Não use um iframe genérico se quiser garantir o bloqueio com precisão.
 
-```html
-<div class="app-shot">
-  <img src="assets/hoje.png" alt="Tela Hoje do Constancce App">
-</div>
+## Planos
+
+### BASIC — R$ 0
+
+O texto foi propositalmente criado sem inventar limites numéricos que ainda não foram definidos no produto. A landing comunica que é uma versão gratuita, limitada e destinada a testes.
+
+### PRO — R$ 37,90
+
+Oferta atual apresentada como pagamento único/vitalício, seguindo as informações fornecidas para o Constancce.
+
+## URLs
+
+```js
+basicUrl: "https://..."
+proCheckoutUrl: "https://..."
 ```
 
-E acrescente em `styles.css`:
+## Teste do bloqueio
 
-```css
-.app-shot img {
-  width: 100%;
-  display: block;
-  border-radius: 28px;
-}
+Durante desenvolvimento, altere temporariamente:
+
+```js
+devMode: true
 ```
 
-## Meta Pixel / Google Analytics
+Será exibido um botão discreto de desenvolvimento para simular 70%. Antes de publicar, volte para `false`.
 
-A landing já dispara eventos internos via `dataLayer` e `fbq`, caso essas bibliotecas estejam instaladas:
+## Eventos de rastreamento preparados
 
-- `quiz_start`
-- `quiz_answer`
-- `quiz_complete`
-- `landing_unlocked`
-- `vsl_play`
-- `checkout_click`
+- quiz_start
+- quiz_answer
+- quiz_complete
+- landing_vsl_revealed
+- vsl_play
+- vsl_25_percent
+- vsl_50_percent
+- vsl_70_percent
+- basic_plan_click
+- pro_checkout_click
 
-Cole os scripts oficiais do Meta Pixel e GA4 no `<head>` e ajuste os eventos conforme seu funil.
+## Importante
 
-## Publicação
+Os limites exatos do BASIC devem ser ajustados quando forem definidos no próprio Constancce. Evitei anunciar, por exemplo, “3 hábitos” ou “1 treino”, porque esses limites não foram fornecidos.
 
-É um site estático. Pode ser publicado em:
 
-- Vercel
-- Netlify
-- GitHub Pages
-- Hostinger / cPanel
-- Cloudflare Pages
-- Qualquer hospedagem que aceite HTML/CSS/JS
+## Screenshots reais inseridos nesta versão
 
-Basta subir todos os arquivos mantendo a estrutura de pastas.
+Os mockups ilustrativos foram substituídos pelos prints enviados, nesta ordem:
 
-## Observações estratégicas
+1. `assets/01-hoje.png`
+2. `assets/02-habitos.png`
+3. `assets/03-treinos.png`
+4. `assets/04-financas.png`
+5. `assets/05-metas.png`
+6. `assets/06-progresso.png`
+7. `assets/07-amigos-conquistas.png`
 
-- Não foi inserida contagem regressiva porque ainda não foi informado um prazo real de campanha.
-- Não foram inventados depoimentos.
-- O texto da garantia foi mantido com ressalva para que corresponda ao checkout e às regras aplicáveis.
-- Os mockups atuais são demonstrativos e devem ser substituídos pelos prints reais do produto para aumentar credibilidade.
+As imagens são os arquivos originais enviados, sem geração de novas imagens.
