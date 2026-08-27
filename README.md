@@ -140,3 +140,20 @@ Nesta versão:
 - o YouTube é carregado com os controles/timeline ocultos;
 - a regra de desbloqueio em 70% continua ativa internamente;
 - o usuário não consegue usar a timeline para avançar diretamente até o ponto de desbloqueio.
+
+
+## Atualização visual — versão tecnológica
+
+Nesta versão a landing foi modernizada sem alterar a lógica do funil.
+
+Principais mudanças:
+- fundo tecnológico com grid sutil e luzes ambientais;
+- cards com efeito glass/digital mais limpo;
+- botões com acabamento e microinteração;
+- molduras dos screenshots com efeito tecnológico mais refinado;
+- nova seção "Constancce PRO" com quatro cards explicativos;
+- fluxo visual "Você executa → Constancce registra → PRO mostra";
+- cards BASIC e PRO redesenhados;
+- card PRO com módulos visuais, status de desbloqueio e destaque recomendado;
+- comparação BASIC x PRO mantida;
+- quiz, VSL e desbloqueio em 70% continuam intactos.
