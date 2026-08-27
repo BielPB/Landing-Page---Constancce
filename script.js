@@ -89,8 +89,6 @@ const postVslContent = document.getElementById("postVslContent");
 const siteFooter = document.getElementById("siteFooter");
 const mobileSticky = document.getElementById("mobileSticky");
 const vslGateStatus = document.getElementById("vslGateStatus");
-const vslWatchedText = document.getElementById("vslWatchedText");
-const vslUnlockProgress = document.getElementById("vslUnlockProgress");
 const vslGateTitle = document.getElementById("vslGateTitle");
 const vslGateHint = document.getElementById("vslGateHint");
 
@@ -193,9 +191,9 @@ document.body.classList.add("quiz-open");
 // VSL GATE — 70% ASSISTIDO
 // =========================
 function updateVslProgress(value) {
-  const pct = Math.max(0, Math.min(100, Math.round(value * 100)));
-  vslWatchedText.textContent = `${pct}% assistido`;
-  vslUnlockProgress.style.width = `${Math.min(100, pct / (CONSTANCCE_CONFIG.unlockAt * 100) * 100)}%`;
+  // O progresso continua sendo calculado internamente para liberar a página,
+  // mas nenhuma porcentagem, tempo restante ou barra é exibida ao usuário.
+  return Math.max(0, Math.min(1, value));
 }
 
 function unlockPostVsl(persist = true) {
@@ -209,10 +207,8 @@ function unlockPostVsl(persist = true) {
   siteFooter.setAttribute("aria-hidden", "false");
 
   vslGateStatus.classList.add("unlocked");
-  vslWatchedText.textContent = "70%+ assistido";
-  vslUnlockProgress.style.width = "100%";
-  vslGateTitle.textContent = "Conteúdo liberado. Agora você pode conhecer todos os recursos e escolher seu plano.";
-  vslGateHint.textContent = "BASIC gratuito para testar ou PRO para liberar a experiência completa.";
+  vslGateTitle.textContent = "Pronto. A próxima parte foi liberada para você.";
+  vslGateHint.textContent = "Continue abaixo para conhecer os recursos e escolher entre BASIC e PRO.";
 
   if (window.innerWidth <= 640) mobileSticky.classList.remove("hidden");
   track("vsl_70_percent", {unlock_at: CONSTANCCE_CONFIG.unlockAt});
@@ -228,19 +224,89 @@ function sumPlayedRanges(video) {
 
 function mountHtml5Vsl() {
   const frame = document.getElementById("videoFrame");
-  frame.innerHTML = `<video id="constancceVsl" controls playsinline preload="metadata" controlsList="nodownload"><source src="${CONSTANCCE_CONFIG.vslUrl}"></video>`;
-  const video = document.getElementById("constancceVsl");
-  let milestone25 = false, milestone50 = false;
 
-  video.addEventListener("play", () => track("vsl_play", {provider:"html5"}), {once:true});
+  frame.innerHTML = `
+    <video id="constancceVsl" playsinline preload="metadata" controlsList="nodownload noplaybackrate nofullscreen">
+      <source src="${CONSTANCCE_CONFIG.vslUrl}">
+    </video>
+
+    <div class="vsl-video-controls" id="vslCustomControls">
+      <button type="button" class="vsl-control-main" id="vslPlayPause" aria-label="Pausar vídeo">❚❚</button>
+
+      <div class="vsl-control-actions">
+        <button type="button" class="vsl-control-icon" id="vslMute" aria-label="Ativar ou desativar áudio">🔊</button>
+        <button type="button" class="vsl-control-icon" id="vslFullscreen" aria-label="Tela cheia">⛶</button>
+      </div>
+    </div>
+  `;
+
+  const video = document.getElementById("constancceVsl");
+  const playPause = document.getElementById("vslPlayPause");
+  const muteBtn = document.getElementById("vslMute");
+  const fullscreenBtn = document.getElementById("vslFullscreen");
+
+  let milestone25 = false;
+  let milestone50 = false;
+
+  const syncPlayButton = () => {
+    playPause.textContent = video.paused ? "▶" : "❚❚";
+    playPause.setAttribute("aria-label", video.paused ? "Reproduzir vídeo" : "Pausar vídeo");
+  };
+
+  const togglePlay = () => {
+    if (video.paused) video.play().catch(() => {});
+    else video.pause();
+  };
+
+  playPause.addEventListener("click", togglePlay);
+  video.addEventListener("click", togglePlay);
+
+  muteBtn.addEventListener("click", () => {
+    video.muted = !video.muted;
+    muteBtn.textContent = video.muted ? "🔇" : "🔊";
+  });
+
+  fullscreenBtn.addEventListener("click", async () => {
+    try {
+      if (!document.fullscreenElement) await frame.requestFullscreen();
+      else await document.exitFullscreen();
+    } catch (_) {}
+  });
+
+  video.addEventListener("play", () => {
+    syncPlayButton();
+    track("vsl_play", {provider:"html5"});
+  }, {once:true});
+
+  video.addEventListener("pause", syncPlayButton);
+
   video.addEventListener("timeupdate", () => {
     if (!video.duration || !isFinite(video.duration)) return;
+
     const watched = sumPlayedRanges(video);
     const ratio = Math.min(1, watched / video.duration);
+
+    // Contagem invisível: usada apenas pela regra de desbloqueio.
     updateVslProgress(ratio);
-    if (!milestone25 && ratio >= .25) { milestone25 = true; track("vsl_25_percent"); }
-    if (!milestone50 && ratio >= .50) { milestone50 = true; track("vsl_50_percent"); }
-    if (!vslUnlocked && ratio >= CONSTANCCE_CONFIG.unlockAt) unlockPostVsl();
+
+    if (!milestone25 && ratio >= .25) {
+      milestone25 = true;
+      track("vsl_25_percent");
+    }
+
+    if (!milestone50 && ratio >= .50) {
+      milestone50 = true;
+      track("vsl_50_percent");
+    }
+
+    if (!vslUnlocked && ratio >= CONSTANCCE_CONFIG.unlockAt) {
+      unlockPostVsl();
+    }
+  });
+
+  // O primeiro clique no placeholder já inicia a VSL.
+  video.play().catch(() => {
+    syncPlayButton();
   });
 }
 
@@ -250,31 +316,95 @@ let ytFurthest = 0;
 
 function mountYouTubeVsl() {
   const frame = document.getElementById("videoFrame");
-  frame.innerHTML = `<div id="youtubeVslPlayer"></div>`;
 
-  window.onYouTubeIframeAPIReady = () => {
+  frame.innerHTML = `
+    <div id="youtubeVslPlayer"></div>
+
+    <div class="vsl-video-controls youtube-controls" id="vslYoutubeControls">
+      <button type="button" class="vsl-control-main" id="ytPlayPause" aria-label="Reproduzir ou pausar vídeo">❚❚</button>
+
+      <div class="vsl-control-actions">
+        <button type="button" class="vsl-control-icon" id="ytMute" aria-label="Ativar ou desativar áudio">🔊</button>
+        <button type="button" class="vsl-control-icon" id="ytFullscreen" aria-label="Tela cheia">⛶</button>
+      </div>
+    </div>
+  `;
+
+  const createPlayer = () => {
     ytPlayer = new YT.Player("youtubeVslPlayer", {
       videoId: CONSTANCCE_CONFIG.youtubeVideoId,
-      playerVars: {rel:0, modestbranding:1, playsinline:1},
+      playerVars: {
+        rel: 0,
+        modestbranding: 1,
+        playsinline: 1,
+        controls: 0,
+        disablekb: 1,
+        fs: 0
+      },
       events: {
+        onReady: event => {
+          const playPause = document.getElementById("ytPlayPause");
+          const muteBtn = document.getElementById("ytMute");
+          const fullscreenBtn = document.getElementById("ytFullscreen");
+
+          playPause.addEventListener("click", () => {
+            const state = ytPlayer.getPlayerState();
+            if (state === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
+            else ytPlayer.playVideo();
+          });
+
+          muteBtn.addEventListener("click", () => {
+            if (ytPlayer.isMuted()) {
+              ytPlayer.unMute();
+              muteBtn.textContent = "🔊";
+            } else {
+              ytPlayer.mute();
+              muteBtn.textContent = "🔇";
+            }
+          });
+
+          fullscreenBtn.addEventListener("click", async () => {
+            try {
+              if (!document.fullscreenElement) await frame.requestFullscreen();
+              else await document.exitFullscreen();
+            } catch (_) {}
+          });
+
+          // Tenta iniciar a partir do clique que abriu a VSL.
+          event.target.playVideo();
+        },
+
         onStateChange: event => {
+          const playPause = document.getElementById("ytPlayPause");
+
+          if (playPause) {
+            playPause.textContent = event.data === YT.PlayerState.PLAYING ? "❚❚" : "▶";
+          }
+
           if (event.data === YT.PlayerState.PLAYING) {
             track("vsl_play", {provider:"youtube"});
+
             if (!ytTimer) {
               ytTimer = setInterval(() => {
                 const duration = ytPlayer.getDuration();
                 const current = ytPlayer.getCurrentTime();
                 if (!duration) return;
 
-                // Impede avançar artificialmente muito além do ponto já assistido.
+                // Impede saltos artificiais e mantém a regra de 70% real.
                 if (current > ytFurthest + 4) {
                   ytPlayer.seekTo(ytFurthest, true);
                   return;
                 }
+
                 ytFurthest = Math.max(ytFurthest, current);
                 const ratio = Math.min(1, ytFurthest / duration);
+
+                // Progresso calculado silenciosamente.
                 updateVslProgress(ratio);
-                if (!vslUnlocked && ratio >= CONSTANCCE_CONFIG.unlockAt) unlockPostVsl();
+
+                if (!vslUnlocked && ratio >= CONSTANCCE_CONFIG.unlockAt) {
+                  unlockPostVsl();
+                }
               }, 1000);
             }
           }
@@ -283,12 +413,14 @@ function mountYouTubeVsl() {
     });
   };
 
-  if (!window.YT) {
+  window.onYouTubeIframeAPIReady = createPlayer;
+
+  if (!window.YT || !window.YT.Player) {
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     document.head.appendChild(tag);
   } else {
-    window.onYouTubeIframeAPIReady();
+    createPlayer();
   }
 }
 

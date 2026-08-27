@@ -127,3 +127,16 @@ Os mockups ilustrativos foram substituídos pelos prints enviados, nesta ordem:
 7. `assets/07-amigos-conquistas.png`
 
 As imagens são os arquivos originais enviados, sem geração de novas imagens.
+
+
+## VSL sem barra de tempo
+
+Nesta versão:
+
+- o usuário não vê porcentagem assistida;
+- o usuário não vê quanto falta para liberar a página;
+- a barra de liberação foi removida;
+- o player HTML5 utiliza controles próprios, sem timeline de tempo;
+- o YouTube é carregado com os controles/timeline ocultos;
+- a regra de desbloqueio em 70% continua ativa internamente;
+- o usuário não consegue usar a timeline para avançar diretamente até o ponto de desbloqueio.
