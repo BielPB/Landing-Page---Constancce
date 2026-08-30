@@ -56,9 +56,18 @@ https://www.constancceapp.com/
 
 O valor do plano PRO não é exibido na landing page.
 
+Os cards BASIC e PRO apresentam perfil ideal, recursos por módulo, limites do plano gratuito e diferenciais da experiência completa. As condições comerciais do PRO permanecem disponíveis apenas dentro do aplicativo.
+
 ## Sistema de movimento
 
 A página inclui animações de entrada e saída, títulos coreografados palavra por palavra, indicador de seção, profundidade nos cards, CTAs magnéticos e movimentos ambientais. Em celulares, ponteiros imprecisos ou dispositivos configurados para reduzir movimento, os efeitos mais intensos são desativados automaticamente.
+
+### Ajustes para mobile
+
+- A página não gera rolagem horizontal; apenas o carrossel de módulos possui navegação lateral própria.
+- O atalho “Ir para o conteúdo” aparece somente durante navegação por teclado.
+- O CTA flutuante inferior foi removido para não cobrir conteúdo ou a VSL.
+- Blur, movimentos contínuos e camadas decorativas mais pesadas são reduzidos no celular.
 
 ## Analytics
 

@@ -1,5 +1,13 @@
 document.documentElement.classList.add("js-ready");
 
+// O atalho de acessibilidade só aparece para quem realmente está navegando pelo teclado.
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Tab") document.body.classList.add("keyboard-navigation");
+});
+window.addEventListener("pointerdown", () => {
+  document.body.classList.remove("keyboard-navigation");
+}, { passive: true });
+
 const APP_URL = "https://www.constancceapp.com/";
 
 function track(eventName, data = {}) {
@@ -458,16 +466,5 @@ document.querySelectorAll(`a[href="${APP_URL}"]`).forEach((link) => {
     });
   });
 });
-
-// Evita que o CTA fixo cubra o CTA final no celular.
-const mobileSticky = document.getElementById("mobileSticky");
-const finalSection = document.querySelector(".final-section");
-if (mobileSticky && finalSection && "IntersectionObserver" in window) {
-  const stickyObserver = new IntersectionObserver(([entry]) => {
-    mobileSticky.style.opacity = entry.isIntersecting ? "0" : "1";
-    mobileSticky.style.pointerEvents = entry.isIntersecting ? "none" : "auto";
-  }, { threshold: 0.15 });
-  stickyObserver.observe(finalSection);
-}
 
 window.CONSTANCCE_CONFIG = { appUrl: APP_URL };

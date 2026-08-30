@@ -10,6 +10,7 @@
   <link rel="canonical" href="https://www.constancceapp.com/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="assets/01-hoje.webp" type="image/webp" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico" sizes="any">
@@ -60,7 +61,7 @@
       <div class="container hero-grid">
         <div class="hero-copy reveal">
           <a class="brand" href="https://www.constancceapp.com/" aria-label="Acessar Constancce App">
-            <span class="brand-mark" aria-hidden="true"><img src="assets/constancce-logo.webp" alt=""></span><span>CONSTANCCE</span>
+            <span class="brand-mark" aria-hidden="true"><img src="assets/constancce-logo.webp" alt="" decoding="async"></span><span>CONSTANCCE</span>
           </a>
           <div class="eyebrow"><span></span> SEU PROGRESSO EM UM SÓ LUGAR</div>
           <h1>Pare de recomeçar.<br><em>Veja sua evolução</em> todos os dias.</h1>
@@ -79,9 +80,9 @@
         <div class="hero-visual reveal" data-delay="120" data-tilt="hero">
           <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
           <div class="hero-axis axis-x" aria-hidden="true"></div><div class="hero-axis axis-y" aria-hidden="true"></div>
-          <div class="hero-phone"><img src="assets/01-hoje.webp" width="828" height="1600" alt="Tela Hoje do Constancce com tarefas, hábitos e progresso diário" fetchpriority="high"></div>
-          <div class="floating-screen floating-screen-one"><img src="assets/06-progresso.webp" width="828" height="1600" alt="Tela de progresso do Constancce"></div>
-          <div class="floating-screen floating-screen-two"><img src="assets/02-habitos.webp" width="828" height="1600" alt="Tela de hábitos do Constancce"></div>
+          <div class="hero-phone"><img src="assets/01-hoje.webp" width="828" height="1600" alt="Tela Hoje do Constancce com tarefas, hábitos e progresso diário" fetchpriority="high" decoding="async"></div>
+          <div class="floating-screen floating-screen-one"><img src="assets/06-progresso.webp" width="828" height="1600" alt="Tela de progresso do Constancce" decoding="async"></div>
+          <div class="floating-screen floating-screen-two"><img src="assets/02-habitos.webp" width="828" height="1600" alt="Tela de hábitos do Constancce" decoding="async"></div>
           <div class="progress-chip chip-top"><span class="signal" aria-hidden="true"></span><div><small>ROTINA</small><strong>Em movimento</strong></div></div>
           <div class="progress-chip chip-bottom"><strong>1 app</strong><span>para acompanhar o todo</span></div>
         </div>
@@ -161,7 +162,7 @@
           <div class="chaos-top"><span>ROTINA FRAGMENTADA</span><i aria-hidden="true"></i></div>
           <div class="chaos-items"><span>Tarefas</span><span>Hábitos</span><span>Treinos</span><span>Dieta</span><span>Finanças</span><span>Metas</span></div>
           <div class="chaos-arrow" aria-hidden="true">↓</div>
-          <div class="solution-bar"><span class="brand-mark small" aria-hidden="true"><img src="assets/constancce-logo.webp" alt=""></span><div><small>COM CONSTANCCE</small><strong>Uma única visão da sua evolução</strong></div></div>
+          <div class="solution-bar"><span class="brand-mark small" aria-hidden="true"><img src="assets/constancce-logo.webp" alt="" loading="lazy" decoding="async"></span><div><small>COM CONSTANCCE</small><strong>Uma única visão da sua evolução</strong></div></div>
         </div>
       </div>
     </section>
@@ -175,7 +176,7 @@
         </div>
         <div class="product-tour reveal" data-delay="100">
           <div class="tour-preview">
-            <div class="device-frame" data-tilt="device"><div class="device-scan" aria-hidden="true"></div><img id="tourImage" src="assets/01-hoje.webp" width="828" height="1600" alt="Tela Hoje do Constancce App"></div>
+            <div class="device-frame" data-tilt="device"><div class="device-scan" aria-hidden="true"></div><img id="tourImage" src="assets/01-hoje.webp" width="828" height="1600" alt="Tela Hoje do Constancce App" loading="lazy" decoding="async"></div>
             <div class="tour-status"><span class="signal" aria-hidden="true"></span><div><small>TELA ATIVA</small><strong id="tourStatus">Hoje</strong></div></div>
           </div>
           <div class="tour-tabs" role="tablist" aria-label="Áreas do Constancce">
@@ -210,20 +211,47 @@
           <div class="pro-head"><div><div class="eyebrow"><span></span> CONSTANCCE PRO</div><h2>Comece pelo BASIC.<br><em>Avance sem limitações</em> com o PRO.</h2><p>Conheça o Constancce gratuitamente e, quando fizer sentido para sua rotina, desbloqueie a experiência completa.</p></div><div class="pro-status"><span class="signal" aria-hidden="true"></span><div><small>EXPERIÊNCIA PRO</small><strong>Acesso vitalício</strong></div></div></div>
           <div class="plans-grid">
             <article class="plan-card basic-card">
-              <div class="plan-top"><div><small>PLANO DE ENTRADA</small><h3>BASIC</h3></div><span>GRATUITO</span></div>
-              <p>Ideal para conhecer a experiência e começar a organizar sua rotina.</p>
-              <ul><li><i aria-hidden="true">✓</i> Até 5 tarefas ativas</li><li><i aria-hidden="true">✓</i> Até 8 registros financeiros</li><li><i aria-hidden="true">✓</i> Uma meta cadastrada</li><li><i aria-hidden="true">✓</i> Até 2 alimentos por horário</li><li><i aria-hidden="true">✓</i> Acesso aos recursos essenciais</li></ul>
-              <a class="btn btn-secondary btn-full" href="https://www.constancceapp.com/">Começar pelo BASIC <span aria-hidden="true">→</span></a>
+              <div class="plan-ambient" aria-hidden="true"></div>
+              <div class="plan-ribbon neutral"><span>01</span><strong>PONTO DE PARTIDA</strong></div>
+              <div class="plan-top">
+                <div class="plan-identity"><span class="plan-icon" aria-hidden="true">B</span><div><small>PLANO DE ENTRADA</small><h3>BASIC</h3></div></div>
+                <span class="plan-badge">GRATUITO</span>
+              </div>
+              <p class="plan-description">Para colocar o Constancce em prática, conhecer os módulos e começar a organizar sua rotina sem compromisso.</p>
+              <div class="plan-fit"><small>IDEAL PARA</small><strong>Quem quer criar o primeiro ritmo e testar o sistema no dia a dia.</strong></div>
+              <div class="plan-list-head"><span>O que está incluído</span><small>Limites do BASIC</small></div>
+              <ul class="plan-features">
+                <li><i aria-hidden="true">✓</i><span><strong>Tarefas</strong><small>Organize suas prioridades diárias</small></span><b>ATÉ 5</b></li>
+                <li><i aria-hidden="true">✓</i><span><strong>Finanças</strong><small>Registre entradas e despesas</small></span><b>ATÉ 8</b></li>
+                <li><i aria-hidden="true">✓</i><span><strong>Metas</strong><small>Transforme um objetivo em progresso</small></span><b>1 META</b></li>
+                <li><i aria-hidden="true">✓</i><span><strong>Dieta</strong><small>Acompanhe sua rotina alimentar</small></span><b>2 / HORÁRIO</b></li>
+                <li><i aria-hidden="true">✓</i><span><strong>Hábitos e treinos</strong><small>Comece pelos recursos de execução</small></span><b>ESSENCIAL</b></li>
+                <li><i aria-hidden="true">✓</i><span><strong>Recursos essenciais</strong><small>Conheça a experiência Constancce</small></span><b>INCLUÍDO</b></li>
+              </ul>
+              <div class="plan-footer"><a class="btn btn-secondary btn-full" href="https://www.constancceapp.com/">Começar gratuitamente <span aria-hidden="true">→</span></a><small class="plan-note">Comece agora e evolua no seu ritmo.</small></div>
             </article>
             <article class="plan-card pro-card">
-              <div class="recommended"><span class="signal" aria-hidden="true"></span> EXPERIÊNCIA COMPLETA</div>
-              <div class="plan-top"><div><small>PARA USAR SEM BLOQUEIOS</small><h3>PRO</h3></div><span>VITALÍCIO</span></div>
-              <p>Para quem quer transformar o Constancce no painel central da própria evolução.</p>
-              <ul><li><i aria-hidden="true">✓</i> Sem os limites do plano BASIC</li><li><i aria-hidden="true">✓</i> Hábitos, tarefas e treinos conectados</li><li><i aria-hidden="true">✓</i> Finanças, dieta e metas completas</li><li><i aria-hidden="true">✓</i> Histórico, progresso e conquistas</li><li><i aria-hidden="true">✓</i> Acesso vitalício à experiência PRO</li></ul>
-              <a class="btn btn-primary btn-full" href="https://www.constancceapp.com/">Conhecer o Constancce PRO <span aria-hidden="true">→</span></a>
-              <small class="plan-note">Veja as condições de acesso dentro do Constancce.</small>
+              <div class="plan-ambient" aria-hidden="true"></div>
+              <div class="plan-ribbon"><span class="signal" aria-hidden="true"></span><strong>EXPERIÊNCIA RECOMENDADA</strong><em>COMPLETA</em></div>
+              <div class="plan-top">
+                <div class="plan-identity"><span class="plan-icon pro-icon" aria-hidden="true"><img src="assets/constancce-logo.webp" alt="" loading="lazy" decoding="async"></span><div><small>PARA EVOLUIR SEM BLOQUEIOS</small><h3>PRO</h3></div></div>
+                <span class="plan-badge">VITALÍCIO</span>
+              </div>
+              <p class="plan-description">Para transformar o Constancce no painel central da sua evolução e acompanhar todas as áreas sem os limites do BASIC.</p>
+              <div class="plan-fit pro-fit"><small>IDEAL PARA</small><strong>Quem decidiu centralizar a rotina e construir um histórico completo.</strong></div>
+              <div class="plan-list-head"><span>Experiência completa</span><small>Sem limites do BASIC</small></div>
+              <ul class="plan-features">
+                <li><i aria-hidden="true">✓</i><span><strong>Tarefas e subtarefas</strong><small>Planeje sua execução com liberdade</small></span><b>SEM LIMITES</b></li>
+                <li><i aria-hidden="true">✓</i><span><strong>Hábitos e treinos</strong><small>Rotina, cargas e histórico conectados</small></span><b>COMPLETO</b></li>
+                <li><i aria-hidden="true">✓</i><span><strong>Finanças e dieta</strong><small>Registros sem os bloqueios do BASIC</small></span><b>COMPLETO</b></li>
+                <li><i aria-hidden="true">✓</i><span><strong>Metas e progresso</strong><small>Visualize a evolução ao longo do tempo</small></span><b>COMPLETO</b></li>
+                <li><i aria-hidden="true">✓</i><span><strong>Amigos e conquistas</strong><small>Compartilhe avanços e celebre resultados</small></span><b>INCLUÍDO</b></li>
+                <li><i aria-hidden="true">✓</i><span><strong>Acesso PRO</strong><small>Use a experiência completa continuamente</small></span><b>VITALÍCIO</b></li>
+              </ul>
+              <div class="plan-footer"><a class="btn btn-primary btn-full" href="https://www.constancceapp.com/">Desbloquear minha experiência <span aria-hidden="true">→</span></a><small class="plan-note">Consulte as condições de acesso dentro do Constancce.</small></div>
             </article>
           </div>
+          <div class="plans-assurance"><span><i aria-hidden="true">✓</i> Comece pelo BASIC</span><span><i aria-hidden="true">✓</i> Evolua quando fizer sentido</span><span><i aria-hidden="true">✓</i> Tudo dentro do mesmo aplicativo</span></div>
         </div>
       </div>
     </section>
@@ -232,7 +260,7 @@
       <div class="container">
         <div class="section-heading center reveal"><div class="eyebrow"><span></span> EVOLUÇÃO VISÍVEL</div><h2>O tempo vai passar.<br><em>Agora ele pode deixar um histórico.</em></h2><p>Constância não precisa ser uma sensação. Pode ser algo que você abre, acompanha e compara.</p></div>
         <div class="journey-line reveal" data-delay="100"><div><strong>7</strong><span>dias</span><p>Você começa a criar ritmo.</p></div><div><strong>30</strong><span>dias</span><p>Sua rotina já deixa registros.</p></div><div><strong>90</strong><span>dias</span><p>Os padrões ficam mais claros.</p></div><div><strong>365</strong><span>dias</span><p>Existe uma história inteira para comparar.</p></div></div>
-        <div class="journey-question reveal"><span class="brand-mark" aria-hidden="true"><img src="assets/constancce-logo.webp" alt=""></span><h3>Quanto você conseguiria mudar se pudesse enxergar cada dia em que decidiu continuar?</h3><a class="btn btn-primary btn-large" href="https://www.constancceapp.com/">Registrar meu primeiro dia <span aria-hidden="true">→</span></a></div>
+        <div class="journey-question reveal"><span class="brand-mark" aria-hidden="true"><img src="assets/constancce-logo.webp" alt="" loading="lazy" decoding="async"></span><h3>Quanto você conseguiria mudar se pudesse enxergar cada dia em que decidiu continuar?</h3><a class="btn btn-primary btn-large" href="https://www.constancceapp.com/">Registrar meu primeiro dia <span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
@@ -261,7 +289,7 @@
 
     <section class="section final-section" data-section="10 / COMEÇO">
       <div class="container narrow center reveal">
-        <div class="final-symbol" aria-hidden="true"><img src="assets/constancce-logo.webp" alt=""></div><div class="eyebrow"><span></span> SUA EVOLUÇÃO COMEÇA NO PRÓXIMO DIA REGISTRADO</div>
+        <div class="final-symbol" aria-hidden="true"><img src="assets/constancce-logo.webp" alt="" loading="lazy" decoding="async"></div><div class="eyebrow"><span></span> SUA EVOLUÇÃO COMEÇA NO PRÓXIMO DIA REGISTRADO</div>
         <h2>Daqui a um ano, você estará em algum lugar.</h2><h3>A pergunta é: <em>quanto terá evoluído até lá?</em></h3>
         <p>Não espere a próxima segunda-feira, o próximo mês ou a motivação voltar. Comece registrando o dia que já está acontecendo.</p>
         <a class="btn btn-primary btn-large" href="https://www.constancceapp.com/">Começar no Constancce <span aria-hidden="true">→</span></a><small>Plano BASIC disponível para começar.</small>
@@ -269,8 +297,7 @@
     </section>
   </main>
 
-  <footer><div class="container footer-row"><a class="brand" href="https://www.constancceapp.com/" aria-label="Acessar Constancce App"><span class="brand-mark small" aria-hidden="true"><img src="assets/constancce-logo.webp" alt=""></span><span>CONSTANCCE</span></a><p>© 2026 Constancce App. Todos os direitos reservados.</p><a class="footer-link" href="https://www.constancceapp.com/">Acessar o app →</a></div></footer>
-  <div class="mobile-sticky" id="mobileSticky"><div><span>Organize. Registre. Evolua.</span><strong>Constancce</strong></div><a class="btn btn-primary" href="https://www.constancceapp.com/">Começar agora</a></div>
+  <footer><div class="container footer-row"><a class="brand" href="https://www.constancceapp.com/" aria-label="Acessar Constancce App"><span class="brand-mark small" aria-hidden="true"><img src="assets/constancce-logo.webp" alt="" loading="lazy" decoding="async"></span><span>CONSTANCCE</span></a><p>© 2026 Constancce App. Todos os direitos reservados.</p><a class="footer-link" href="https://www.constancceapp.com/">Acessar o app →</a></div></footer>
   <script src="script.js" defer></script>
 </body>
 </html>
