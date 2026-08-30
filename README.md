@@ -5,9 +5,10 @@ Landing page estática, responsiva e pronta para publicação.
 ## Arquivos principais
 
 - `index.html`: conteúdo, SEO e estrutura da página.
-- `styles.css`: design responsivo e animações.
-- `script.js`: quiz, tour das telas, FAQ e eventos de analytics.
-- `assets/`: screenshots do Constancce em PNG e WebP.
+- `styles.css`: direção de arte, responsividade e sistema completo de animações.
+- `script.js`: quiz, tour das telas, FAQ, progresso de rolagem, transições por seção, microinterações e eventos de analytics.
+- `assets/`: screenshots em WebP, logo oficial e ícones do Constancce.
+- `favicon.ico`: favicon oficial em múltiplas resoluções.
 - `robots.txt`, `sitemap.xml` e `manifest.webmanifest`: arquivos de SEO e instalação.
 
 ## Como inserir a VSL
@@ -54,6 +55,10 @@ https://www.constancceapp.com/
 ```
 
 O valor do plano PRO não é exibido na landing page.
+
+## Sistema de movimento
+
+A página inclui animações de entrada e saída, títulos coreografados palavra por palavra, indicador de seção, profundidade nos cards, CTAs magnéticos e movimentos ambientais. Em celulares, ponteiros imprecisos ou dispositivos configurados para reduzir movimento, os efeitos mais intensos são desativados automaticamente.
 
 ## Analytics
 

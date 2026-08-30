@@ -12,7 +12,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta property="og:locale" content="pt_BR">
   <meta property="og:type" content="website">
@@ -20,9 +22,14 @@
   <meta property="og:description" content="Hábitos, tarefas, treinos, dieta, finanças, metas e progresso conectados em um único aplicativo.">
   <meta property="og:url" content="https://www.constancceapp.com/">
   <meta property="og:site_name" content="Constancce">
+  <meta property="og:image" content="https://www.constancceapp.com/assets/icon-512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:image:alt" content="Logo do Constancce">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Constancce — Sua evolução. Todos os dias.">
   <meta name="twitter:description" content="Organize sua rotina e transforme ações diárias em progresso visível.">
+  <meta name="twitter:image" content="https://www.constancceapp.com/assets/icon-512.png">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -39,6 +46,11 @@
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+  <div class="cursor-aura" id="cursorAura" aria-hidden="true"></div>
+  <div class="section-indicator" id="sectionIndicator" aria-hidden="true">
+    <span id="sectionIndex">00</span><i></i><strong id="sectionName">INÍCIO</strong>
+  </div>
   <div class="page-grid" aria-hidden="true"></div>
   <div class="ambient ambient-one" aria-hidden="true"></div>
   <div class="ambient ambient-two" aria-hidden="true"></div>
@@ -48,7 +60,7 @@
       <div class="container hero-grid">
         <div class="hero-copy reveal">
           <a class="brand" href="https://www.constancceapp.com/" aria-label="Acessar Constancce App">
-            <span class="brand-mark" aria-hidden="true">🔥</span><span>CONSTANCCE</span>
+            <span class="brand-mark" aria-hidden="true"><img src="assets/constancce-logo.webp" alt=""></span><span>CONSTANCCE</span>
           </a>
           <div class="eyebrow"><span></span> SEU PROGRESSO EM UM SÓ LUGAR</div>
           <h1>Pare de recomeçar.<br><em>Veja sua evolução</em> todos os dias.</h1>
@@ -64,11 +76,12 @@
           </div>
         </div>
 
-        <div class="hero-visual reveal" data-delay="120">
+        <div class="hero-visual reveal" data-delay="120" data-tilt="hero">
           <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
-          <div class="hero-phone"><picture><source srcset="assets/01-hoje.webp" type="image/webp"><img src="assets/01-hoje.png" width="828" height="1600" alt="Tela Hoje do Constancce com tarefas, hábitos e progresso diário" fetchpriority="high"></picture></div>
-          <div class="floating-screen floating-screen-one"><picture><source srcset="assets/06-progresso.webp" type="image/webp"><img src="assets/06-progresso.png" width="828" height="1600" alt="Tela de progresso do Constancce"></picture></div>
-          <div class="floating-screen floating-screen-two"><picture><source srcset="assets/02-habitos.webp" type="image/webp"><img src="assets/02-habitos.png" width="828" height="1600" alt="Tela de hábitos do Constancce"></picture></div>
+          <div class="hero-axis axis-x" aria-hidden="true"></div><div class="hero-axis axis-y" aria-hidden="true"></div>
+          <div class="hero-phone"><img src="assets/01-hoje.webp" width="828" height="1600" alt="Tela Hoje do Constancce com tarefas, hábitos e progresso diário" fetchpriority="high"></div>
+          <div class="floating-screen floating-screen-one"><img src="assets/06-progresso.webp" width="828" height="1600" alt="Tela de progresso do Constancce"></div>
+          <div class="floating-screen floating-screen-two"><img src="assets/02-habitos.webp" width="828" height="1600" alt="Tela de hábitos do Constancce"></div>
           <div class="progress-chip chip-top"><span class="signal" aria-hidden="true"></span><div><small>ROTINA</small><strong>Em movimento</strong></div></div>
           <div class="progress-chip chip-bottom"><strong>1 app</strong><span>para acompanhar o todo</span></div>
         </div>
@@ -78,9 +91,15 @@
         <div><strong>1</strong><span>visão da sua rotina</span></div>
         <div><strong>Todos</strong><span>os dias registrados</span></div>
       </div>
+      <div class="system-rail" aria-label="Módulos conectados do Constancce">
+        <div class="system-rail-track">
+          <span>HOJE</span><i></i><span>HÁBITOS</span><i></i><span>TAREFAS</span><i></i><span>TREINOS</span><i></i><span>DIETA</span><i></i><span>FINANÇAS</span><i></i><span>METAS</span><i></i><span>PROGRESSO</span><i></i><span>AMIGOS</span><i></i>
+          <span aria-hidden="true">HOJE</span><i aria-hidden="true"></i><span aria-hidden="true">HÁBITOS</span><i aria-hidden="true"></i><span aria-hidden="true">TAREFAS</span><i aria-hidden="true"></i><span aria-hidden="true">TREINOS</span><i aria-hidden="true"></i><span aria-hidden="true">DIETA</span><i aria-hidden="true"></i><span aria-hidden="true">FINANÇAS</span><i aria-hidden="true"></i><span aria-hidden="true">METAS</span><i aria-hidden="true"></i><span aria-hidden="true">PROGRESSO</span><i aria-hidden="true"></i><span aria-hidden="true">AMIGOS</span><i aria-hidden="true"></i>
+        </div>
+      </div>
     </section>
 
-    <section class="section diagnostic-section" id="diagnostico">
+    <section class="section diagnostic-section" id="diagnostico" data-section="01 / DIAGNÓSTICO">
       <div class="container narrow">
         <div class="section-heading center reveal">
           <div class="eyebrow"><span></span> DIAGNÓSTICO RÁPIDO</div>
@@ -113,7 +132,7 @@
       </div>
     </section>
 
-    <section class="section vsl-section" id="apresentacao">
+    <section class="section vsl-section" id="apresentacao" data-section="02 / VISÃO">
       <div class="container narrow center">
         <div class="section-heading reveal">
           <div class="eyebrow"><span></span> CONHEÇA POR DENTRO</div>
@@ -122,13 +141,15 @@
         </div>
         <!-- ESPAÇO DA VSL: substitua apenas o conteúdo de #vslPlayerSlot pelo embed do seu player. Veja o README.md. -->
         <div class="vsl-frame reveal" id="vslPlayerSlot" data-delay="100">
+          <div class="player-chrome" aria-hidden="true"><span><i></i><i></i><i></i></span><strong>CONSTANCCE / APRESENTAÇÃO</strong><small>16:9</small></div>
+          <span class="frame-corner corner-a" aria-hidden="true"></span><span class="frame-corner corner-b" aria-hidden="true"></span><span class="frame-corner corner-c" aria-hidden="true"></span><span class="frame-corner corner-d" aria-hidden="true"></span>
           <div class="vsl-glow" aria-hidden="true"></div>
           <div class="vsl-placeholder"><span class="vsl-label">ESPAÇO DA VSL</span><div class="vsl-play" aria-hidden="true">▶</div><strong>Apresentação do Constancce</strong><p>Insira aqui o seu vídeo final antes de publicar.</p></div>
         </div>
       </div>
     </section>
 
-    <section class="section problem-section">
+    <section class="section problem-section" data-section="03 / CONTEXTO">
       <div class="container problem-grid">
         <div class="problem-copy reveal">
           <div class="eyebrow"><span></span> O PROBLEMA NÃO É FALTA DE INTENÇÃO</div>
@@ -140,12 +161,12 @@
           <div class="chaos-top"><span>ROTINA FRAGMENTADA</span><i aria-hidden="true"></i></div>
           <div class="chaos-items"><span>Tarefas</span><span>Hábitos</span><span>Treinos</span><span>Dieta</span><span>Finanças</span><span>Metas</span></div>
           <div class="chaos-arrow" aria-hidden="true">↓</div>
-          <div class="solution-bar"><span class="brand-mark small" aria-hidden="true">🔥</span><div><small>COM CONSTANCCE</small><strong>Uma única visão da sua evolução</strong></div></div>
+          <div class="solution-bar"><span class="brand-mark small" aria-hidden="true"><img src="assets/constancce-logo.webp" alt=""></span><div><small>COM CONSTANCCE</small><strong>Uma única visão da sua evolução</strong></div></div>
         </div>
       </div>
     </section>
 
-    <section class="section tour-section" id="recursos">
+    <section class="section tour-section" id="recursos" data-section="04 / SISTEMA">
       <div class="container">
         <div class="section-heading center reveal">
           <div class="eyebrow"><span></span> TUDO CONECTADO</div>
@@ -154,7 +175,7 @@
         </div>
         <div class="product-tour reveal" data-delay="100">
           <div class="tour-preview">
-            <div class="device-frame"><img id="tourImage" src="assets/01-hoje.webp" width="828" height="1600" alt="Tela Hoje do Constancce App"></div>
+            <div class="device-frame" data-tilt="device"><div class="device-scan" aria-hidden="true"></div><img id="tourImage" src="assets/01-hoje.webp" width="828" height="1600" alt="Tela Hoje do Constancce App"></div>
             <div class="tour-status"><span class="signal" aria-hidden="true"></span><div><small>TELA ATIVA</small><strong id="tourStatus">Hoje</strong></div></div>
           </div>
           <div class="tour-tabs" role="tablist" aria-label="Áreas do Constancce">
@@ -170,7 +191,7 @@
       </div>
     </section>
 
-    <section class="section daily-section">
+    <section class="section daily-section" data-section="05 / ROTINA">
       <div class="container">
         <div class="section-heading center reveal"><div class="eyebrow"><span></span> FEITO PARA O DIA A DIA</div><h2>Do primeiro compromisso à última tarefa, <em>o Constancce continua com você.</em></h2></div>
         <div class="daily-flow">
@@ -182,7 +203,7 @@
       </div>
     </section>
 
-    <section class="section pro-section" id="pro">
+    <section class="section pro-section" id="pro" data-section="06 / ACESSO">
       <div class="container">
         <div class="pro-shell reveal">
           <div class="pro-grid-overlay" aria-hidden="true"></div>
@@ -207,22 +228,22 @@
       </div>
     </section>
 
-    <section class="section journey-section">
+    <section class="section journey-section" data-section="07 / TEMPO">
       <div class="container">
         <div class="section-heading center reveal"><div class="eyebrow"><span></span> EVOLUÇÃO VISÍVEL</div><h2>O tempo vai passar.<br><em>Agora ele pode deixar um histórico.</em></h2><p>Constância não precisa ser uma sensação. Pode ser algo que você abre, acompanha e compara.</p></div>
         <div class="journey-line reveal" data-delay="100"><div><strong>7</strong><span>dias</span><p>Você começa a criar ritmo.</p></div><div><strong>30</strong><span>dias</span><p>Sua rotina já deixa registros.</p></div><div><strong>90</strong><span>dias</span><p>Os padrões ficam mais claros.</p></div><div><strong>365</strong><span>dias</span><p>Existe uma história inteira para comparar.</p></div></div>
-        <div class="journey-question reveal"><span class="brand-mark" aria-hidden="true">🔥</span><h3>Quanto você conseguiria mudar se pudesse enxergar cada dia em que decidiu continuar?</h3><a class="btn btn-primary btn-large" href="https://www.constancceapp.com/">Registrar meu primeiro dia <span aria-hidden="true">→</span></a></div>
+        <div class="journey-question reveal"><span class="brand-mark" aria-hidden="true"><img src="assets/constancce-logo.webp" alt=""></span><h3>Quanto você conseguiria mudar se pudesse enxergar cada dia em que decidiu continuar?</h3><a class="btn btn-primary btn-large" href="https://www.constancceapp.com/">Registrar meu primeiro dia <span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
-    <section class="section audience-section">
+    <section class="section audience-section" data-section="08 / ENCAIXE">
       <div class="container audience-grid">
         <article class="audience-card audience-yes reveal"><div class="eyebrow"><span></span> O CONSTANCCE É PARA VOCÊ SE...</div><h2>Você quer transformar intenção em acompanhamento.</h2><ul><li>Começa projetos e tem dificuldade para continuar</li><li>Quer desenvolver hábitos melhores</li><li>Precisa organizar treinos, dieta ou finanças</li><li>Tem metas importantes que não quer esquecer</li><li>Quer centralizar a rotina em um único lugar</li><li>Gosta de enxergar números, histórico e progresso</li></ul></article>
         <article class="audience-card audience-no reveal" data-delay="100"><div class="eyebrow muted"><span></span> UMA VERDADE IMPORTANTE</div><h2>O app organiza o caminho. Mas ainda existe uma parte que depende de você.</h2><p>O Constancce registra, lembra, organiza, conecta e mostra. Ele reduz o caos e aumenta a clareza.</p><strong>Você continua responsável por executar.</strong></article>
       </div>
     </section>
 
-    <section class="section faq-section" id="faq">
+    <section class="section faq-section" id="faq" data-section="09 / RESPOSTAS">
       <div class="container narrow">
         <div class="section-heading center reveal"><div class="eyebrow"><span></span> DÚVIDAS FREQUENTES</div><h2>Tudo o que você precisa saber <em>antes de começar.</em></h2></div>
         <div class="faq reveal" data-delay="100">
@@ -238,9 +259,9 @@
       </div>
     </section>
 
-    <section class="section final-section">
+    <section class="section final-section" data-section="10 / COMEÇO">
       <div class="container narrow center reveal">
-        <div class="final-symbol" aria-hidden="true">🔥</div><div class="eyebrow"><span></span> SUA EVOLUÇÃO COMEÇA NO PRÓXIMO DIA REGISTRADO</div>
+        <div class="final-symbol" aria-hidden="true"><img src="assets/constancce-logo.webp" alt=""></div><div class="eyebrow"><span></span> SUA EVOLUÇÃO COMEÇA NO PRÓXIMO DIA REGISTRADO</div>
         <h2>Daqui a um ano, você estará em algum lugar.</h2><h3>A pergunta é: <em>quanto terá evoluído até lá?</em></h3>
         <p>Não espere a próxima segunda-feira, o próximo mês ou a motivação voltar. Comece registrando o dia que já está acontecendo.</p>
         <a class="btn btn-primary btn-large" href="https://www.constancceapp.com/">Começar no Constancce <span aria-hidden="true">→</span></a><small>Plano BASIC disponível para começar.</small>
@@ -248,7 +269,7 @@
     </section>
   </main>
 
-  <footer><div class="container footer-row"><a class="brand" href="https://www.constancceapp.com/" aria-label="Acessar Constancce App"><span class="brand-mark small" aria-hidden="true">🔥</span><span>CONSTANCCE</span></a><p>© 2026 Constancce App. Todos os direitos reservados.</p><a class="footer-link" href="https://www.constancceapp.com/">Acessar o app →</a></div></footer>
+  <footer><div class="container footer-row"><a class="brand" href="https://www.constancceapp.com/" aria-label="Acessar Constancce App"><span class="brand-mark small" aria-hidden="true"><img src="assets/constancce-logo.webp" alt=""></span><span>CONSTANCCE</span></a><p>© 2026 Constancce App. Todos os direitos reservados.</p><a class="footer-link" href="https://www.constancceapp.com/">Acessar o app →</a></div></footer>
   <div class="mobile-sticky" id="mobileSticky"><div><span>Organize. Registre. Evolua.</span><strong>Constancce</strong></div><a class="btn btn-primary" href="https://www.constancceapp.com/">Começar agora</a></div>
   <script src="script.js" defer></script>
 </body>

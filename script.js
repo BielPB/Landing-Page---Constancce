@@ -18,11 +18,9 @@ revealItems.forEach((item) => {
 
 if ("IntersectionObserver" in window) {
   const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
+    (entries) => {
       entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
       });
     },
     { threshold: 0.12, rootMargin: "0px 0px -35px" }
@@ -30,6 +28,199 @@ if ("IntersectionObserver" in window) {
   revealItems.forEach((item) => revealObserver.observe(item));
 } else {
   revealItems.forEach((item) => item.classList.add("is-visible"));
+}
+
+// Coreografia tipográfica: preserva ênfases e quebras de linha enquanto anima palavra por palavra.
+const animatedHeadings = document.querySelectorAll(
+  ".hero-copy h1, .section-heading h2, .problem-copy h2, .pro-head h2, .audience-card h2, .final-section h2, .final-section h3, .journey-question h3"
+);
+
+function wrapHeadingWords(element) {
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  let node;
+
+  while ((node = walker.nextNode())) {
+    if (node.textContent.trim()) textNodes.push(node);
+  }
+
+  let wordIndex = 0;
+  textNodes.forEach((textNode) => {
+    const fragment = document.createDocumentFragment();
+    textNode.textContent.split(/(\s+)/).forEach((part) => {
+      if (!part) return;
+      if (/^\s+$/.test(part)) {
+        fragment.append(part);
+        return;
+      }
+
+      const word = document.createElement("span");
+      word.className = "word";
+      word.style.setProperty("--word-index", wordIndex);
+      word.textContent = part;
+      fragment.append(word);
+      wordIndex += 1;
+    });
+    textNode.replaceWith(fragment);
+  });
+
+  element.classList.add("text-animate");
+}
+
+animatedHeadings.forEach(wrapHeadingWords);
+
+if ("IntersectionObserver" in window) {
+  const textObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle("text-in", entry.isIntersecting);
+      });
+    },
+    { threshold: 0.35, rootMargin: "0px 0px -8%" }
+  );
+  animatedHeadings.forEach((heading) => textObserver.observe(heading));
+} else {
+  animatedHeadings.forEach((heading) => heading.classList.add("text-in"));
+}
+
+// Barra de progresso e deslocamento sutil do mockup principal.
+const scrollProgress = document.getElementById("scrollProgress");
+const heroVisual = document.querySelector(".hero-visual");
+let scrollFrame = 0;
+
+function updateScrollEffects() {
+  const scrollable = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+  const progress = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
+  scrollProgress?.style.setProperty("--scroll-progress", progress.toFixed(4));
+
+  if (heroVisual) {
+    const heroOffset = Math.min(window.scrollY * 0.04, 20);
+    heroVisual.style.setProperty("--parallax-y", `${heroOffset}px`);
+  }
+  scrollFrame = 0;
+}
+
+function requestScrollEffects() {
+  if (scrollFrame) return;
+  scrollFrame = requestAnimationFrame(updateScrollEffects);
+}
+
+window.addEventListener("scroll", requestScrollEffects, { passive: true });
+window.addEventListener("resize", requestScrollEffects, { passive: true });
+updateScrollEffects();
+
+// Indicador editorial de seção e gatilhos visuais da seção em foco.
+const signatureSections = Array.from(document.querySelectorAll("section[data-section]"));
+const sectionIndicator = document.getElementById("sectionIndicator");
+const sectionIndex = document.getElementById("sectionIndex");
+const sectionName = document.getElementById("sectionName");
+const sectionVisibility = new Map();
+
+function setActiveSection(section) {
+  if (!section) return;
+  signatureSections.forEach((item) => item.classList.toggle("section-active", item === section));
+  const [index, name] = section.dataset.section.split("/").map((part) => part.trim());
+  if (sectionIndex) sectionIndex.textContent = index;
+  if (sectionName) sectionName.textContent = name;
+}
+
+if (signatureSections.length && "IntersectionObserver" in window) {
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        sectionVisibility.set(entry.target, entry.isIntersecting ? entry.intersectionRatio : 0);
+      });
+
+      const activeSection = signatureSections.reduce((best, section) => {
+        return (sectionVisibility.get(section) || 0) > (sectionVisibility.get(best) || 0) ? section : best;
+      }, signatureSections[0]);
+      setActiveSection(activeSection);
+    },
+    { threshold: [0.12, 0.25, 0.4, 0.6], rootMargin: "-18% 0px -42%" }
+  );
+  signatureSections.forEach((section) => sectionObserver.observe(section));
+}
+
+function updateSectionIndicator() {
+  sectionIndicator?.classList.toggle("visible", window.scrollY > Math.min(window.innerHeight * 0.65, 620));
+}
+window.addEventListener("scroll", updateSectionIndicator, { passive: true });
+updateSectionIndicator();
+
+// Interações de profundidade ficam restritas a ponteiros precisos e respeitam movimento reduzido.
+const finePointer = window.matchMedia("(pointer: fine)");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+if (finePointer.matches && !reducedMotion.matches) {
+  const cursorAura = document.getElementById("cursorAura");
+  let pointerFrame = 0;
+  let pointerX = -600;
+  let pointerY = -600;
+
+  window.addEventListener("pointermove", (event) => {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    document.body.classList.add("has-pointer");
+    if (pointerFrame) return;
+    pointerFrame = requestAnimationFrame(() => {
+      cursorAura?.style.setProperty("--cursor-x", `${pointerX}px`);
+      cursorAura?.style.setProperty("--cursor-y", `${pointerY}px`);
+      pointerFrame = 0;
+    });
+  }, { passive: true });
+
+  document.documentElement.addEventListener("mouseleave", () => {
+    document.body.classList.remove("has-pointer");
+  });
+
+  if (heroVisual) {
+    heroVisual.addEventListener("pointermove", (event) => {
+      const rect = heroVisual.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = (event.clientY - rect.top) / rect.height;
+      heroVisual.style.setProperty("--tilt-x", `${(x - 0.5) * 6}deg`);
+      heroVisual.style.setProperty("--tilt-y", `${(0.5 - y) * 5}deg`);
+      heroVisual.style.setProperty("--parallax-x", `${(x - 0.5) * 10}px`);
+    });
+    heroVisual.addEventListener("pointerleave", () => {
+      heroVisual.style.setProperty("--tilt-x", "0deg");
+      heroVisual.style.setProperty("--tilt-y", "0deg");
+      heroVisual.style.setProperty("--parallax-x", "0px");
+    });
+  }
+
+  document.querySelectorAll(".daily-card, .plan-card, .audience-card, .chaos-card").forEach((card) => {
+    card.classList.add("tilt-card");
+    card.addEventListener("pointermove", (event) => {
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = (event.clientY - rect.top) / rect.height;
+      card.style.setProperty("--card-rx", `${(0.5 - y) * 4}deg`);
+      card.style.setProperty("--card-ry", `${(x - 0.5) * 5}deg`);
+      card.style.setProperty("--mx", `${x * 100}%`);
+      card.style.setProperty("--my", `${y * 100}%`);
+    });
+    card.addEventListener("pointerleave", () => {
+      card.style.setProperty("--card-rx", "0deg");
+      card.style.setProperty("--card-ry", "0deg");
+      card.style.setProperty("--mx", "50%");
+      card.style.setProperty("--my", "50%");
+    });
+  });
+
+  document.querySelectorAll(".btn").forEach((button) => {
+    button.addEventListener("pointermove", (event) => {
+      const rect = button.getBoundingClientRect();
+      const x = event.clientX - (rect.left + rect.width / 2);
+      const y = event.clientY - (rect.top + rect.height / 2);
+      button.style.setProperty("--magnet-x", `${x * 0.08}px`);
+      button.style.setProperty("--magnet-y", `${y * 0.08}px`);
+    });
+    button.addEventListener("pointerleave", () => {
+      button.style.setProperty("--magnet-x", "0px");
+      button.style.setProperty("--magnet-y", "0px");
+    });
+  });
 }
 
 // Quiz realmente personalizado: as três respostas influenciam o resultado.
@@ -234,6 +425,9 @@ function activateTourTab(tab) {
 
 tourTabs.forEach((tab, index) => {
   tab.addEventListener("click", () => activateTourTab(tab));
+  if (finePointer.matches && !reducedMotion.matches) {
+    tab.addEventListener("mouseenter", () => activateTourTab(tab));
+  }
   tab.addEventListener("keydown", (event) => {
     if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(event.key)) return;
     event.preventDefault();
