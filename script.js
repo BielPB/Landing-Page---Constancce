@@ -1,504 +1,279 @@
-// =========================
-// CONFIGURAÇÃO RÁPIDA
-// =========================
-const CONSTANCCE_CONFIG = {
-  // Planos
-  basicUrl: "",       // URL para cadastro/acesso gratuito BASIC
-  proCheckoutUrl: "", // URL do checkout PRO
+document.documentElement.classList.add("js-ready");
 
-  // VSL
-  // Opções: "html5" para MP4/WebM direto ou "youtube" para YouTube.
-  vslProvider: "html5",
-  vslUrl: "",          // Ex.: "assets/vsl.mp4"
-  youtubeVideoId: "",  // Ex.: "dQw4w9WgXcQ"
-  unlockAt: 0.70,       // 70% assistido
+const APP_URL = "https://www.constancceapp.com/";
 
-  // Ative SOMENTE localmente se quiser testar o desbloqueio sem VSL.
-  devMode: false,
+function track(eventName, data = {}) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: eventName, ...data });
+  if (typeof window.fbq === "function") {
+    window.fbq("trackCustom", eventName, data);
+  }
+}
 
-  metaPixelId: "",
-  gaMeasurementId: ""
-};
+// Entrada suave: a página continua totalmente visível caso o JavaScript falhe.
+const revealItems = document.querySelectorAll(".reveal");
+revealItems.forEach((item) => {
+  item.style.setProperty("--delay", `${Number(item.dataset.delay || 0)}ms`);
+});
 
-// =========================
-// QUIZ
-// =========================
+if ("IntersectionObserver" in window) {
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -35px" }
+  );
+  revealItems.forEach((item) => revealObserver.observe(item));
+} else {
+  revealItems.forEach((item) => item.classList.add("is-visible"));
+}
+
+// Quiz realmente personalizado: as três respostas influenciam o resultado.
 const questions = [
   {
-    title: "Qual área da sua vida parece mais desorganizada hoje?",
+    title: "Qual área da sua vida mais precisa de organização hoje?",
     options: [
-      ["Hábitos e rotina", "Começo bem, mas não consigo manter constância.", "habitos"],
-      ["Treinos", "Treino, mas não acompanho minha evolução como deveria.", "treinos"],
-      ["Finanças", "Recebo, gasto e nem sempre sei exatamente para onde o dinheiro foi.", "financas"],
-      ["Metas", "Tenho objetivos, mas acabo deixando muitos de lado.", "metas"],
-      ["Tudo ao mesmo tempo", "Parece que estou tentando organizar minha vida inteira em lugares diferentes.", "centralizacao"]
+      ["Hábitos e rotina", "Começo bem, mas não consigo manter o ritmo.", "habitos"],
+      ["Treinos e saúde", "Faço, mas não acompanho minha evolução como deveria.", "treinos"],
+      ["Finanças", "Recebo, gasto e perco a visão do que está acontecendo.", "financas"],
+      ["Metas e projetos", "Tenho objetivos, mas eles acabam ficando para depois.", "metas"],
+      ["Tudo ao mesmo tempo", "Minha rotina está espalhada em lugares diferentes.", "centralizacao"]
     ]
   },
   {
-    title: "Quantas vezes você já começou algo motivado e abandonou poucos dias depois?",
+    title: "O que normalmente faz você perder o ritmo?",
     options: [
-      ["Quase nunca", "", "baixo"],
-      ["Algumas vezes", "", "medio"],
-      ["Muitas vezes", "", "alto"],
-      ["Já perdi as contas", "", "muito_alto"]
+      ["Esqueço o que preciso fazer", "Minha rotina depende demais da memória.", "memoria"],
+      ["Uso ferramentas demais", "As informações ficam espalhadas.", "fragmentacao"],
+      ["Não consigo ver resultado", "Sem progresso visível, perco a motivação.", "visibilidade"],
+      ["Tento mudar tudo de uma vez", "A rotina fica pesada e difícil de sustentar.", "excesso"]
     ]
   },
   {
-    title: "Se alguém perguntasse o quanto você evoluiu nos últimos 30 dias, conseguiria mostrar?",
+    title: "Você conseguiria mostrar como evoluiu nos últimos 30 dias?",
     options: [
-      ["Sim. Acompanho praticamente tudo.", "", "claro"],
-      ["Mais ou menos.", "", "parcial"],
-      ["Não com clareza.", "", "baixo"],
-      ["Sinceramente? Não faço ideia.", "", "nenhum"]
-    ]
-  },
-  {
-    title: "O que mais ajudaria você a ter constância?",
-    options: [
-      ["Enxergar minha evolução", "", "progresso"],
-      ["Ter uma rotina mais organizada", "", "rotina"],
-      ["Acompanhar meus hábitos diariamente", "", "habitos"],
-      ["Controlar melhor minhas metas", "", "metas"],
-      ["Ter tudo em um único lugar", "", "centralizacao"]
-    ]
-  },
-  {
-    title: "Imagine abrir um único aplicativo e visualizar rotina, hábitos, treinos, dinheiro, metas e progresso. Isso faria diferença?",
-    options: [
-      ["Sim, muita.", "", "sim"],
-      ["Provavelmente.", "", "provavelmente"],
-      ["Quero entender como funciona.", "", "curioso"]
+      ["Sim, acompanho com clareza", "Tenho registros e consigo comparar.", "claro"],
+      ["Mais ou menos", "Lembro de algumas coisas, mas falta uma visão completa.", "parcial"],
+      ["Não com clareza", "Sei que fiz coisas, mas não consigo provar o avanço.", "baixo"],
+      ["Sinceramente, não faço ideia", "Os dias passam sem deixar um histórico.", "nenhum"]
     ]
   }
 ];
 
+const resultByArea = {
+  habitos: {
+    title: "Seu problema não parece ser começar. É continuar quando a motivação passa.",
+    text: "Você já demonstra intenção de mudar, mas seus hábitos ainda dependem demais do impulso do momento.",
+    action: "Transforme cada hábito concluído em um registro que incentive o próximo dia."
+  },
+  treinos: {
+    title: "Você pode estar se esforçando sem conseguir enxergar a própria evolução.",
+    text: "Treinar sem registrar cargas, exercícios e frequência torna difícil perceber o que realmente está melhorando.",
+    action: "Centralize seus treinos e compare a execução ao longo das semanas."
+  },
+  financas: {
+    title: "Sem visualizar o dinheiro, suas decisões ficam mais difíceis de controlar.",
+    text: "Quando entradas, despesas e próximas contas não estão reunidas, é fácil perder a noção do conjunto.",
+    action: "Registre as movimentações no momento em que acontecem e mantenha o saldo visível."
+  },
+  metas: {
+    title: "A meta existe, mas ainda não foi transformada em um caminho visível.",
+    text: "Objetivos que ficam apenas na cabeça disputam espaço com todas as urgências do dia.",
+    action: "Divida cada meta em etapas e acompanhe o percentual que já foi construído."
+  },
+  centralizacao: {
+    title: "Sua rotina está espalhada demais para você conseguir enxergar o todo.",
+    text: "O problema não é falta de esforço. É tentar acompanhar áreas conectadas usando ferramentas que não conversam entre si.",
+    action: "Reúna execução, registros e progresso em um único painel diário."
+  }
+};
+
+const barrierText = {
+  memoria: "Como tudo depende da memória, tarefas importantes desaparecem no meio das urgências.",
+  fragmentacao: "O excesso de ferramentas cria atrito e faz você abandonar o acompanhamento.",
+  visibilidade: "Sem uma resposta visual para o esforço, continuar parece mais difícil do que realmente é.",
+  excesso: "Tentar mudar tudo de uma vez torna a rotina pesada antes que ela tenha tempo de se consolidar."
+};
+
+const visibilityText = {
+  claro: "Você já possui o hábito de acompanhar e pode ganhar ainda mais clareza centralizando as áreas.",
+  parcial: "Existem registros, mas ainda falta uma visão única que conecte as decisões do dia.",
+  baixo: "Hoje, você não consegue demonstrar com clareza o quanto avançou no último mês.",
+  nenhum: "Seus dias estão passando sem deixar um histórico confiável da pessoa que você está construindo."
+};
+
 let currentQuestion = 0;
 let answers = [];
-let vslUnlocked = localStorage.getItem("constancce_vsl_unlocked") === "1";
 
-const intro = document.getElementById("quizIntro");
+const quizIntro = document.getElementById("quizIntro");
 const quizCard = document.getElementById("quizCard");
-const result = document.getElementById("quizResult");
-const mount = document.getElementById("questionMount");
-const counter = document.getElementById("quizCounter");
-const percent = document.getElementById("quizPercent");
-const progress = document.getElementById("quizProgress");
-const backBtn = document.getElementById("quizBack");
-const landing = document.getElementById("landingContent");
-const postVslContent = document.getElementById("postVslContent");
-const siteFooter = document.getElementById("siteFooter");
-const mobileSticky = document.getElementById("mobileSticky");
-const vslGateStatus = document.getElementById("vslGateStatus");
-const vslGateTitle = document.getElementById("vslGateTitle");
-const vslGateHint = document.getElementById("vslGateHint");
+const quizResult = document.getElementById("quizResult");
+const questionMount = document.getElementById("questionMount");
+const quizCounter = document.getElementById("quizCounter");
+const quizPercent = document.getElementById("quizPercent");
+const quizProgress = document.getElementById("quizProgress");
+const quizBack = document.getElementById("quizBack");
 
-function track(eventName, data = {}) {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({event: eventName, ...data});
-  if (typeof window.fbq === "function") window.fbq("trackCustom", eventName, data);
+function focusQuizHeading() {
+  const heading = document.querySelector(".question h3, #resultTitle");
+  if (!heading) return;
+  heading.setAttribute("tabindex", "-1");
+  heading.focus({ preventScroll: true });
 }
 
 function renderQuestion() {
-  const q = questions[currentQuestion];
-  const pct = Math.round(((currentQuestion + 1) / questions.length) * 100);
-  counter.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
-  percent.textContent = `${pct}%`;
-  progress.style.width = `${pct}%`;
-  backBtn.classList.toggle("hidden", currentQuestion === 0);
+  const question = questions[currentQuestion];
+  const percentage = Math.round(((currentQuestion + 1) / questions.length) * 100);
+  quizCounter.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
+  quizPercent.textContent = `${percentage}%`;
+  quizProgress.style.width = `${percentage}%`;
+  quizBack.classList.toggle("hidden", currentQuestion === 0);
 
-  mount.innerHTML = `
+  questionMount.innerHTML = `
     <div class="question">
-      <h2>${q.title}</h2>
+      <h3>${question.title}</h3>
       <div class="answers">
-        ${q.options.map((opt, i) => `
-          <button class="answer" data-index="${i}">
-            <span class="answer-index">${String.fromCharCode(65+i)}</span>
+        ${question.options.map((option, index) => `
+          <button class="answer" type="button" data-index="${index}">
+            <span class="answer-index">${String.fromCharCode(65 + index)}</span>
             <span class="answer-copy">
-              <strong>${opt[0]}</strong>
-              ${opt[1] ? `<small>${opt[1]}</small>` : ""}
+              <strong>${option[0]}</strong>
+              <small>${option[1]}</small>
             </span>
           </button>
         `).join("")}
       </div>
-    </div>`;
+    </div>
+  `;
 
-  mount.querySelectorAll(".answer").forEach(btn => {
-    btn.addEventListener("click", () => selectAnswer(Number(btn.dataset.index)));
+  questionMount.querySelectorAll(".answer").forEach((button) => {
+    button.addEventListener("click", () => selectAnswer(Number(button.dataset.index)));
   });
+  focusQuizHeading();
 }
 
 function selectAnswer(index) {
   const selected = questions[currentQuestion].options[index];
-  answers[currentQuestion] = {label: selected[0], value: selected[2]};
-  track("quiz_answer", {question: currentQuestion + 1, answer: selected[2]});
+  answers[currentQuestion] = { label: selected[0], value: selected[2] };
+  track("quiz_answer", { question: currentQuestion + 1, answer: selected[2] });
+
   if (currentQuestion < questions.length - 1) {
-    currentQuestion++;
+    currentQuestion += 1;
     renderQuestion();
-  } else {
-    showResult();
+    return;
   }
+  showResult();
 }
 
 function showResult() {
+  const area = answers[0]?.value || "centralizacao";
+  const barrier = answers[1]?.value || "fragmentacao";
+  const visibility = answers[2]?.value || "parcial";
+  const result = resultByArea[area];
+
+  document.getElementById("resultTitle").textContent = result.title;
+  document.getElementById("resultText").textContent = `${result.text} ${barrierText[barrier]} ${visibilityText[visibility]}`;
+  document.getElementById("resultAction").textContent = result.action;
+
   quizCard.classList.add("hidden");
-  result.classList.remove("hidden");
-  const area = answers[0]?.value;
-  const consistency = answers[1]?.value;
-  const visibility = answers[2]?.value;
-  const areaText = {
-    habitos: "Sua rotina parece depender demais da motivação do momento.",
-    treinos: "Você até executa, mas falta um histórico simples que mostre se está avançando.",
-    financas: "Sem registrar o dinheiro, suas decisões ficam difíceis de enxergar no longo prazo.",
-    metas: "Objetivos sem acompanhamento tendem a virar apenas boas intenções.",
-    centralizacao: "O excesso de ferramentas pode estar fragmentando sua visão da própria evolução."
-  };
-  const intensity = ["alto","muito_alto"].includes(consistency)
-    ? " E como você já viveu vários ciclos de começar e parar, reduzir a dependência da motivação é especialmente importante." : "";
-  const visibilityText = ["baixo","nenhum"].includes(visibility)
-    ? " Hoje, o maior sinal é que você não consegue provar com clareza o quanto avançou nos últimos 30 dias." : "";
-  document.getElementById("resultText").textContent =
-    `${areaText[area] || "O seu principal desafio parece ser transformar intenção em acompanhamento."}${intensity}${visibilityText} O Constancce foi pensado para centralizar execução e progresso em um único lugar.`;
-  track("quiz_complete", {primary_area: area || "indefinido"});
+  quizResult.classList.remove("hidden");
+  focusQuizHeading();
+  track("quiz_complete", { primary_area: area, barrier, visibility });
 }
 
-document.getElementById("startQuiz").addEventListener("click", () => {
-  intro.classList.add("hidden");
-  quizCard.classList.remove("hidden");
+function startQuiz() {
   currentQuestion = 0;
   answers = [];
+  quizIntro.classList.add("hidden");
+  quizResult.classList.add("hidden");
+  quizCard.classList.remove("hidden");
   renderQuestion();
   track("quiz_start");
-});
-
-backBtn.addEventListener("click", () => {
-  if (currentQuestion > 0) { currentQuestion--; renderQuestion(); }
-});
-
-document.getElementById("unlockPage").addEventListener("click", () => {
-  landing.classList.remove("is-locked");
-  landing.setAttribute("aria-hidden", "false");
-  document.body.classList.remove("quiz-open");
-  document.getElementById("vsl").scrollIntoView({behavior:"smooth"});
-
-  // Se o usuário já desbloqueou a VSL anteriormente, mantém a liberação.
-  if (vslUnlocked) unlockPostVsl(false);
-  track("landing_vsl_revealed");
-});
-
-document.body.classList.add("quiz-open");
-
-// =========================
-// VSL GATE — 70% ASSISTIDO
-// =========================
-function updateVslProgress(value) {
-  // O progresso continua sendo calculado internamente para liberar a página,
-  // mas nenhuma porcentagem, tempo restante ou barra é exibida ao usuário.
-  return Math.max(0, Math.min(1, value));
 }
 
-function unlockPostVsl(persist = true) {
-  if (vslUnlocked && !postVslContent.classList.contains("is-vsl-locked")) return;
-  vslUnlocked = true;
-  if (persist) localStorage.setItem("constancce_vsl_unlocked", "1");
+document.getElementById("startQuiz")?.addEventListener("click", startQuiz);
+document.getElementById("restartQuiz")?.addEventListener("click", startQuiz);
+quizBack?.addEventListener("click", () => {
+  if (currentQuestion === 0) return;
+  currentQuestion -= 1;
+  renderQuestion();
+});
 
-  postVslContent.classList.remove("is-vsl-locked");
-  postVslContent.setAttribute("aria-hidden", "false");
-  siteFooter.classList.remove("is-vsl-locked");
-  siteFooter.setAttribute("aria-hidden", "false");
+// Tour das telas.
+const tourTabs = Array.from(document.querySelectorAll(".tour-tab"));
+const tourImage = document.getElementById("tourImage");
+const tourStatus = document.getElementById("tourStatus");
 
-  vslGateStatus.classList.add("unlocked");
-  vslGateTitle.textContent = "Pronto. A próxima parte foi liberada para você.";
-  vslGateHint.textContent = "Continue abaixo para conhecer os recursos e escolher entre BASIC e PRO.";
+function activateTourTab(tab) {
+  if (!tab || tab.classList.contains("active")) return;
+  tourTabs.forEach((item) => {
+    const isActive = item === tab;
+    item.classList.toggle("active", isActive);
+    item.setAttribute("aria-selected", String(isActive));
+  });
 
-  if (window.innerWidth <= 640) mobileSticky.classList.remove("hidden");
-  track("vsl_70_percent", {unlock_at: CONSTANCCE_CONFIG.unlockAt});
-}
+  const nextImage = new Image();
+  nextImage.src = tab.dataset.image;
+  tourImage.classList.add("switching");
 
-function sumPlayedRanges(video) {
-  let total = 0;
-  for (let i = 0; i < video.played.length; i++) {
-    total += video.played.end(i) - video.played.start(i);
-  }
-  return total;
-}
-
-function mountHtml5Vsl() {
-  const frame = document.getElementById("videoFrame");
-
-  frame.innerHTML = `
-    <video id="constancceVsl" playsinline preload="metadata" controlsList="nodownload noplaybackrate nofullscreen">
-      <source src="${CONSTANCCE_CONFIG.vslUrl}">
-    </video>
-
-    <div class="vsl-video-controls" id="vslCustomControls">
-      <button type="button" class="vsl-control-main" id="vslPlayPause" aria-label="Pausar vídeo">❚❚</button>
-
-      <div class="vsl-control-actions">
-        <button type="button" class="vsl-control-icon" id="vslMute" aria-label="Ativar ou desativar áudio">🔊</button>
-        <button type="button" class="vsl-control-icon" id="vslFullscreen" aria-label="Tela cheia">⛶</button>
-      </div>
-    </div>
-  `;
-
-  const video = document.getElementById("constancceVsl");
-  const playPause = document.getElementById("vslPlayPause");
-  const muteBtn = document.getElementById("vslMute");
-  const fullscreenBtn = document.getElementById("vslFullscreen");
-
-  let milestone25 = false;
-  let milestone50 = false;
-
-  const syncPlayButton = () => {
-    playPause.textContent = video.paused ? "▶" : "❚❚";
-    playPause.setAttribute("aria-label", video.paused ? "Reproduzir vídeo" : "Pausar vídeo");
+  const applyImage = () => {
+    tourImage.src = tab.dataset.image;
+    tourImage.alt = tab.dataset.alt;
+    tourStatus.textContent = tab.dataset.title;
+    requestAnimationFrame(() => tourImage.classList.remove("switching"));
   };
 
-  const togglePlay = () => {
-    if (video.paused) video.play().catch(() => {});
-    else video.pause();
-  };
-
-  playPause.addEventListener("click", togglePlay);
-  video.addEventListener("click", togglePlay);
-
-  muteBtn.addEventListener("click", () => {
-    video.muted = !video.muted;
-    muteBtn.textContent = video.muted ? "🔇" : "🔊";
-  });
-
-  fullscreenBtn.addEventListener("click", async () => {
-    try {
-      if (!document.fullscreenElement) await frame.requestFullscreen();
-      else await document.exitFullscreen();
-    } catch (_) {}
-  });
-
-  video.addEventListener("play", () => {
-    syncPlayButton();
-    track("vsl_play", {provider:"html5"});
-  }, {once:true});
-
-  video.addEventListener("pause", syncPlayButton);
-
-  video.addEventListener("timeupdate", () => {
-    if (!video.duration || !isFinite(video.duration)) return;
-
-    const watched = sumPlayedRanges(video);
-    const ratio = Math.min(1, watched / video.duration);
-
-    // Contagem invisível: usada apenas pela regra de desbloqueio.
-    updateVslProgress(ratio);
-
-    if (!milestone25 && ratio >= .25) {
-      milestone25 = true;
-      track("vsl_25_percent");
-    }
-
-    if (!milestone50 && ratio >= .50) {
-      milestone50 = true;
-      track("vsl_50_percent");
-    }
-
-    if (!vslUnlocked && ratio >= CONSTANCCE_CONFIG.unlockAt) {
-      unlockPostVsl();
-    }
-  });
-
-  // O primeiro clique no placeholder já inicia a VSL.
-  video.play().catch(() => {
-    syncPlayButton();
-  });
+  if (nextImage.complete) applyImage();
+  else nextImage.addEventListener("load", applyImage, { once: true });
+  track("feature_view", { feature: tab.dataset.title });
 }
 
-let ytPlayer = null;
-let ytTimer = null;
-let ytFurthest = 0;
-
-function mountYouTubeVsl() {
-  const frame = document.getElementById("videoFrame");
-
-  frame.innerHTML = `
-    <div id="youtubeVslPlayer"></div>
-
-    <div class="vsl-video-controls youtube-controls" id="vslYoutubeControls">
-      <button type="button" class="vsl-control-main" id="ytPlayPause" aria-label="Reproduzir ou pausar vídeo">❚❚</button>
-
-      <div class="vsl-control-actions">
-        <button type="button" class="vsl-control-icon" id="ytMute" aria-label="Ativar ou desativar áudio">🔊</button>
-        <button type="button" class="vsl-control-icon" id="ytFullscreen" aria-label="Tela cheia">⛶</button>
-      </div>
-    </div>
-  `;
-
-  const createPlayer = () => {
-    ytPlayer = new YT.Player("youtubeVslPlayer", {
-      videoId: CONSTANCCE_CONFIG.youtubeVideoId,
-      playerVars: {
-        rel: 0,
-        modestbranding: 1,
-        playsinline: 1,
-        controls: 0,
-        disablekb: 1,
-        fs: 0
-      },
-      events: {
-        onReady: event => {
-          const playPause = document.getElementById("ytPlayPause");
-          const muteBtn = document.getElementById("ytMute");
-          const fullscreenBtn = document.getElementById("ytFullscreen");
-
-          playPause.addEventListener("click", () => {
-            const state = ytPlayer.getPlayerState();
-            if (state === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
-            else ytPlayer.playVideo();
-          });
-
-          muteBtn.addEventListener("click", () => {
-            if (ytPlayer.isMuted()) {
-              ytPlayer.unMute();
-              muteBtn.textContent = "🔊";
-            } else {
-              ytPlayer.mute();
-              muteBtn.textContent = "🔇";
-            }
-          });
-
-          fullscreenBtn.addEventListener("click", async () => {
-            try {
-              if (!document.fullscreenElement) await frame.requestFullscreen();
-              else await document.exitFullscreen();
-            } catch (_) {}
-          });
-
-          // Tenta iniciar a partir do clique que abriu a VSL.
-          event.target.playVideo();
-        },
-
-        onStateChange: event => {
-          const playPause = document.getElementById("ytPlayPause");
-
-          if (playPause) {
-            playPause.textContent = event.data === YT.PlayerState.PLAYING ? "❚❚" : "▶";
-          }
-
-          if (event.data === YT.PlayerState.PLAYING) {
-            track("vsl_play", {provider:"youtube"});
-
-            if (!ytTimer) {
-              ytTimer = setInterval(() => {
-                const duration = ytPlayer.getDuration();
-                const current = ytPlayer.getCurrentTime();
-                if (!duration) return;
-
-                // Impede saltos artificiais e mantém a regra de 70% real.
-                if (current > ytFurthest + 4) {
-                  ytPlayer.seekTo(ytFurthest, true);
-                  return;
-                }
-
-                ytFurthest = Math.max(ytFurthest, current);
-                const ratio = Math.min(1, ytFurthest / duration);
-
-                // Progresso calculado silenciosamente.
-                updateVslProgress(ratio);
-
-                if (!vslUnlocked && ratio >= CONSTANCCE_CONFIG.unlockAt) {
-                  unlockPostVsl();
-                }
-              }, 1000);
-            }
-          }
-        }
-      }
-    });
-  };
-
-  window.onYouTubeIframeAPIReady = createPlayer;
-
-  if (!window.YT || !window.YT.Player) {
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(tag);
-  } else {
-    createPlayer();
-  }
-}
-
-function startVsl() {
-  if (CONSTANCCE_CONFIG.vslProvider === "youtube") {
-    if (!CONSTANCCE_CONFIG.youtubeVideoId) {
-      alert("Adicione o ID do vídeo do YouTube em CONSTANCCE_CONFIG.youtubeVideoId.");
-      return;
-    }
-    mountYouTubeVsl();
-  } else {
-    if (!CONSTANCCE_CONFIG.vslUrl) {
-      alert("Adicione o arquivo/URL da VSL em CONSTANCCE_CONFIG.vslUrl.");
-      return;
-    }
-    mountHtml5Vsl();
-  }
-}
-
-document.getElementById("playVsl").addEventListener("click", startVsl);
-
-if (CONSTANCCE_CONFIG.devMode) {
-  const btn = document.createElement("button");
-  btn.className = "dev-unlock";
-  btn.textContent = "DEV: simular 70% assistido";
-  btn.addEventListener("click", () => unlockPostVsl(false));
-  vslGateStatus.appendChild(btn);
-}
-
-// =========================
-// PLANOS
-// =========================
-document.querySelectorAll(".js-basic").forEach(link => {
-  link.addEventListener("click", e => {
-    e.preventDefault();
-    track("basic_plan_click");
-    if (CONSTANCCE_CONFIG.basicUrl) {
-      window.location.href = CONSTANCCE_CONFIG.basicUrl;
-    } else {
-      alert("Adicione a URL de cadastro do plano BASIC em CONSTANCCE_CONFIG.basicUrl.");
-    }
+tourTabs.forEach((tab, index) => {
+  tab.addEventListener("click", () => activateTourTab(tab));
+  tab.addEventListener("keydown", (event) => {
+    if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(event.key)) return;
+    event.preventDefault();
+    const direction = ['ArrowDown', 'ArrowRight'].includes(event.key) ? 1 : -1;
+    const nextIndex = (index + direction + tourTabs.length) % tourTabs.length;
+    tourTabs[nextIndex].focus();
+    activateTourTab(tourTabs[nextIndex]);
   });
 });
 
-document.querySelectorAll(".js-checkout").forEach(link => {
-  link.addEventListener("click", e => {
-    e.preventDefault();
-    track("pro_checkout_click", {price:37.90});
-    if (CONSTANCCE_CONFIG.proCheckoutUrl) {
-      window.location.href = CONSTANCCE_CONFIG.proCheckoutUrl;
-    } else {
-      alert("Adicione o checkout PRO em CONSTANCCE_CONFIG.proCheckoutUrl.");
-    }
-  });
-});
-
-document.querySelectorAll(".js-plans").forEach(link => {
-  link.addEventListener("click", e => {
-    e.preventDefault();
-    if (!vslUnlocked) {
-      document.getElementById("vsl").scrollIntoView({behavior:"smooth"});
-      return;
-    }
-    document.getElementById("planos").scrollIntoView({behavior:"smooth"});
-  });
-});
-
-// =========================
-// FAQ
-// =========================
-document.querySelectorAll(".faq details").forEach(item => {
+// Mantém apenas uma pergunta do FAQ aberta.
+document.querySelectorAll(".faq details").forEach((item) => {
   item.addEventListener("toggle", () => {
-    if (item.open) {
-      document.querySelectorAll(".faq details").forEach(other => {
-        if (other !== item) other.open = false;
-      });
-    }
+    if (!item.open) return;
+    document.querySelectorAll(".faq details").forEach((other) => {
+      if (other !== item) other.open = false;
+    });
+    track("faq_open", { question: item.querySelector("summary")?.textContent || "" });
   });
 });
 
-window.CONSTANCCE_CONFIG = CONSTANCCE_CONFIG;
+// Identifica a origem de cada clique sem alterar o destino solicitado.
+document.querySelectorAll(`a[href="${APP_URL}"]`).forEach((link) => {
+  link.addEventListener("click", () => {
+    track("app_cta_click", {
+      label: link.textContent.trim().replace(/\s+/g, " "),
+      section: link.closest("section")?.id || link.closest("section")?.className || "footer"
+    });
+  });
+});
+
+// Evita que o CTA fixo cubra o CTA final no celular.
+const mobileSticky = document.getElementById("mobileSticky");
+const finalSection = document.querySelector(".final-section");
+if (mobileSticky && finalSection && "IntersectionObserver" in window) {
+  const stickyObserver = new IntersectionObserver(([entry]) => {
+    mobileSticky.style.opacity = entry.isIntersecting ? "0" : "1";
+    mobileSticky.style.pointerEvents = entry.isIntersecting ? "none" : "auto";
+  }, { threshold: 0.15 });
+  stickyObserver.observe(finalSection);
+}
+
+window.CONSTANCCE_CONFIG = { appUrl: APP_URL };

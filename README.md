@@ -1,159 +1,73 @@
-# Constancce App — Landing Page com VSL Gate 70% + BASIC/PRO
+# Constancce — Landing Page Otimizada
 
-## Funil implementado
+Landing page estática, responsiva e pronta para publicação.
 
-1. Quiz de 5 perguntas
-2. Diagnóstico personalizado
-3. Liberação exclusiva da VSL
-4. Restante da página fica totalmente oculto
-5. Ao atingir 70% realmente assistido, o restante é liberado automaticamente
-6. Apresentação do produto
-7. Dois planos: BASIC gratuito e PRO vitalício
-8. FAQ, garantia e CTAs
+## Arquivos principais
 
-## Como funciona o bloqueio da VSL
+- `index.html`: conteúdo, SEO e estrutura da página.
+- `styles.css`: design responsivo e animações.
+- `script.js`: quiz, tour das telas, FAQ e eventos de analytics.
+- `assets/`: screenshots do Constancce em PNG e WebP.
+- `robots.txt`, `sitemap.xml` e `manifest.webmanifest`: arquivos de SEO e instalação.
 
-A página não usa apenas o `currentTime` do vídeo no modo HTML5. Ela soma os intervalos realmente reproduzidos (`video.played`), evitando que apenas arrastar a barra para 70% libere o conteúdo.
+## Como inserir a VSL
 
-No YouTube, o código acompanha o maior ponto assistido e impede saltos grandes para frente antes da parte já vista.
+No `index.html`, localize:
 
-Ao atingir 70%, são liberados:
-
-- Recursos
-- Benefícios
-- Prova social
-- Planos BASIC e PRO
-- FAQ
-- Garantia
-- CTA final
-- Rodapé
-- CTA fixo no mobile
-
-A liberação é salva no navegador com `localStorage` para não bloquear novamente o mesmo usuário em uma recarga posterior.
-
-## Configuração principal
-
-Edite `script.js`:
-
-```js
-const CONSTANCCE_CONFIG = {
-  basicUrl: "",
-  proCheckoutUrl: "",
-  vslProvider: "html5",
-  vslUrl: "",
-  youtubeVideoId: "",
-  unlockAt: 0.70,
-  devMode: false
-};
+```html
+<div class="vsl-frame reveal" id="vslPlayerSlot" data-delay="100">
 ```
 
-### Opção 1 — MP4/WebM direto
+Substitua apenas o conteúdo interno dessa `div` pelo seu player.
 
-```js
-vslProvider: "html5",
-vslUrl: "assets/vsl.mp4"
+### Vídeo MP4
+
+```html
+<video controls playsinline preload="metadata" poster="assets/capa-vsl.webp">
+  <source src="assets/vsl.mp4" type="video/mp4">
+  Seu navegador não suporta reprodução de vídeo.
+</video>
 ```
 
-Coloque o vídeo na pasta `assets`.
+### YouTube
 
-### Opção 2 — YouTube
-
-```js
-vslProvider: "youtube",
-youtubeVideoId: "SEU_ID_AQUI"
+```html
+<iframe
+  src="https://www.youtube.com/embed/SEU_ID"
+  title="Apresentação do Constancce"
+  loading="lazy"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen>
+</iframe>
 ```
 
-Use apenas o ID do vídeo, não a URL completa.
+### Panda Video, Vimeo ou outro player
 
-### Outros players (Panda, Vimeo, etc.)
+Cole o código de incorporação fornecido pela plataforma dentro de `#vslPlayerSlot`.
 
-Cada player possui sua própria API de progresso. Para medir 70% de forma real, a integração precisa usar a API oficial do player escolhido. Não use um iframe genérico se quiser garantir o bloqueio com precisão.
+## Destino dos botões
 
-## Planos
+Todos os CTAs levam para:
 
-### BASIC — R$ 0
-
-O texto foi propositalmente criado sem inventar limites numéricos que ainda não foram definidos no produto. A landing comunica que é uma versão gratuita, limitada e destinada a testes.
-
-### PRO — R$ 37,90
-
-Oferta atual apresentada como pagamento único/vitalício, seguindo as informações fornecidas para o Constancce.
-
-## URLs
-
-```js
-basicUrl: "https://..."
-proCheckoutUrl: "https://..."
+```text
+https://www.constancceapp.com/
 ```
 
-## Teste do bloqueio
+O valor do plano PRO não é exibido na landing page.
 
-Durante desenvolvimento, altere temporariamente:
+## Analytics
 
-```js
-devMode: true
-```
+O código envia eventos para `window.dataLayer` e também para `fbq`, quando o Meta Pixel já estiver instalado:
 
-Será exibido um botão discreto de desenvolvimento para simular 70%. Antes de publicar, volte para `false`.
+- `quiz_start`
+- `quiz_answer`
+- `quiz_complete`
+- `feature_view`
+- `faq_open`
+- `app_cta_click`
 
-## Eventos de rastreamento preparados
+Instale o Google Tag Manager, GA4 ou Meta Pixel no `<head>` conforme os IDs oficiais da conta.
 
-- quiz_start
-- quiz_answer
-- quiz_complete
-- landing_vsl_revealed
-- vsl_play
-- vsl_25_percent
-- vsl_50_percent
-- vsl_70_percent
-- basic_plan_click
-- pro_checkout_click
+## Publicação
 
-## Importante
-
-Os limites exatos do BASIC devem ser ajustados quando forem definidos no próprio Constancce. Evitei anunciar, por exemplo, “3 hábitos” ou “1 treino”, porque esses limites não foram fornecidos.
-
-
-## Screenshots reais inseridos nesta versão
-
-Os mockups ilustrativos foram substituídos pelos prints enviados, nesta ordem:
-
-1. `assets/01-hoje.png`
-2. `assets/02-habitos.png`
-3. `assets/03-treinos.png`
-4. `assets/04-financas.png`
-5. `assets/05-metas.png`
-6. `assets/06-progresso.png`
-7. `assets/07-amigos-conquistas.png`
-
-As imagens são os arquivos originais enviados, sem geração de novas imagens.
-
-
-## VSL sem barra de tempo
-
-Nesta versão:
-
-- o usuário não vê porcentagem assistida;
-- o usuário não vê quanto falta para liberar a página;
-- a barra de liberação foi removida;
-- o player HTML5 utiliza controles próprios, sem timeline de tempo;
-- o YouTube é carregado com os controles/timeline ocultos;
-- a regra de desbloqueio em 70% continua ativa internamente;
-- o usuário não consegue usar a timeline para avançar diretamente até o ponto de desbloqueio.
-
-
-## Atualização visual — versão tecnológica
-
-Nesta versão a landing foi modernizada sem alterar a lógica do funil.
-
-Principais mudanças:
-- fundo tecnológico com grid sutil e luzes ambientais;
-- cards com efeito glass/digital mais limpo;
-- botões com acabamento e microinteração;
-- molduras dos screenshots com efeito tecnológico mais refinado;
-- nova seção "Constancce PRO" com quatro cards explicativos;
-- fluxo visual "Você executa → Constancce registra → PRO mostra";
-- cards BASIC e PRO redesenhados;
-- card PRO com módulos visuais, status de desbloqueio e destaque recomendado;
-- comparação BASIC x PRO mantida;
-- quiz, VSL e desbloqueio em 70% continuam intactos.
+Envie toda a pasta para sua hospedagem mantendo a estrutura de arquivos. O domínio configurado no SEO é `https://www.constancceapp.com/`.

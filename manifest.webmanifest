@@ -1,0 +1,10 @@
+{
+  "name": "Constancce App",
+  "short_name": "Constancce",
+  "description": "Organize sua rotina e acompanhe sua evolução todos os dias.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080a09",
+  "theme_color": "#090b0a",
+  "lang": "pt-BR"
+}
