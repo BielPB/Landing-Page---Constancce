@@ -56,15 +56,9 @@ No `index.html`, localize a seção `id="depoimentos"` e o comentário:
 
 Cada `.testimonial-card` tem três partes para editar: a citação (`.testimonial-quote`), o nome (`strong`) e o contexto de uso (`small`, ex.: "Usa o Constancce há 4 meses"). Os cards ficam com borda tracejada até serem preenchidos — isso é intencional, para não parecerem depoimentos reais antes de existirem.
 
-## Como definir o preço do PRO
+## Preço do PRO
 
-No card do plano PRO, localize o comentário:
-
-```html
-<!-- PREÇO DO PRO: troque "— · —" pelo valor real (ex.: "R$ 197 · pagamento único") antes de publicar. -->
-```
-
-Substitua o conteúdo de `.plan-price-todo` pelo valor real e remova a classe `plan-price-todo` (ela só existe para destacar visualmente o que falta preencher).
+O plano PRO custa **R$ 37,90** (pagamento único, acesso vitalício), exibido no card `.pro-card .plan-price`. A compra é feita dentro do Constancce, após o usuário criar a conta — por isso os CTAs de "PRO" levam para o app, não para um checkout na própria landing page. Para atualizar o valor, edite o texto dentro de `.plan-price` nos dois cards (`basic-card` e `pro-card`).
 
 ## Destino dos botões
 
@@ -75,8 +69,6 @@ https://www.constancceapp.com/
 ```
 
 ...com um parâmetro `?src=` que identifica a origem do clique (`hero`, `quiz_result`, `plan_basic`, `plan_pro`, `journey`, `final_cta`, `footer`, `sticky_header`). Isso serve como uma segunda camada de atribuição, independente do `dataLayer`/Meta Pixel — funciona mesmo se o analytics via JavaScript falhar ou for bloqueado. Ao trocar os links para o destino final de checkout/login, mantenha o parâmetro `?src=` no final da URL.
-
-O valor do plano PRO não é exibido na landing page (veja "Como definir o preço do PRO" acima).
 
 Os cards BASIC e PRO apresentam perfil ideal, recursos por módulo, limites do plano gratuito e diferenciais da experiência completa. As condições comerciais do PRO permanecem disponíveis apenas dentro do aplicativo.
 
