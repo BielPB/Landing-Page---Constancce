@@ -155,6 +155,14 @@ function updateSectionIndicator() {
 window.addEventListener("scroll", updateSectionIndicator, { passive: true });
 updateSectionIndicator();
 
+// Header fixo só aparece depois que a hero sai da tela, para não competir com o CTA principal.
+const siteHeader = document.getElementById("siteHeader");
+function updateSiteHeader() {
+  siteHeader?.classList.toggle("visible", window.scrollY > window.innerHeight * 0.8);
+}
+window.addEventListener("scroll", updateSiteHeader, { passive: true });
+updateSiteHeader();
+
 // Interações de profundidade ficam restritas a ponteiros precisos e respeitam movimento reduzido.
 const finePointer = window.matchMedia("(pointer: fine)");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -458,7 +466,7 @@ document.querySelectorAll(".faq details").forEach((item) => {
 });
 
 // Identifica a origem de cada clique sem alterar o destino solicitado.
-document.querySelectorAll(`a[href="${APP_URL}"]`).forEach((link) => {
+document.querySelectorAll(`a[href^="${APP_URL}"]`).forEach((link) => {
   link.addEventListener("click", () => {
     track("app_cta_click", {
       label: link.textContent.trim().replace(/\s+/g, " "),

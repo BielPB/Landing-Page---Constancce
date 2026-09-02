@@ -46,6 +46,26 @@ Substitua apenas o conteúdo interno dessa `div` pelo seu player.
 
 Cole o código de incorporação fornecido pela plataforma dentro de `#vslPlayerSlot`.
 
+## Como preencher os depoimentos
+
+No `index.html`, localize a seção `id="depoimentos"` e o comentário:
+
+```html
+<!-- ESPAÇO DOS DEPOIMENTOS: substitua cada .testimonial-card por um depoimento real (nome, contexto e citação). -->
+```
+
+Cada `.testimonial-card` tem três partes para editar: a citação (`.testimonial-quote`), o nome (`strong`) e o contexto de uso (`small`, ex.: "Usa o Constancce há 4 meses"). Os cards ficam com borda tracejada até serem preenchidos — isso é intencional, para não parecerem depoimentos reais antes de existirem.
+
+## Como definir o preço do PRO
+
+No card do plano PRO, localize o comentário:
+
+```html
+<!-- PREÇO DO PRO: troque "— · —" pelo valor real (ex.: "R$ 197 · pagamento único") antes de publicar. -->
+```
+
+Substitua o conteúdo de `.plan-price-todo` pelo valor real e remova a classe `plan-price-todo` (ela só existe para destacar visualmente o que falta preencher).
+
 ## Destino dos botões
 
 Todos os CTAs levam para:
@@ -54,9 +74,15 @@ Todos os CTAs levam para:
 https://www.constancceapp.com/
 ```
 
-O valor do plano PRO não é exibido na landing page.
+...com um parâmetro `?src=` que identifica a origem do clique (`hero`, `quiz_result`, `plan_basic`, `plan_pro`, `journey`, `final_cta`, `footer`, `sticky_header`). Isso serve como uma segunda camada de atribuição, independente do `dataLayer`/Meta Pixel — funciona mesmo se o analytics via JavaScript falhar ou for bloqueado. Ao trocar os links para o destino final de checkout/login, mantenha o parâmetro `?src=` no final da URL.
+
+O valor do plano PRO não é exibido na landing page (veja "Como definir o preço do PRO" acima).
 
 Os cards BASIC e PRO apresentam perfil ideal, recursos por módulo, limites do plano gratuito e diferenciais da experiência completa. As condições comerciais do PRO permanecem disponíveis apenas dentro do aplicativo.
+
+## Header fixo
+
+Um header discreto (`#siteHeader`) aparece automaticamente depois que a hero sai da tela, com logo e um CTA compacto, para que o visitante não precise rolar de volta ao topo para converter. Ele fica oculto na hero para não competir com o CTA principal.
 
 ## Sistema de movimento
 
@@ -66,7 +92,7 @@ A página inclui animações de entrada e saída, títulos coreografados palavra
 
 - A página não gera rolagem horizontal; apenas o carrossel de módulos possui navegação lateral própria.
 - O atalho “Ir para o conteúdo” aparece somente durante navegação por teclado.
-- O CTA flutuante inferior foi removido para não cobrir conteúdo ou a VSL.
+- O CTA flutuante inferior foi removido para não cobrir conteúdo ou a VSL. O header fixo do topo (compacto, sem sobrepor a VSL) cobre essa necessidade sem repetir o problema.
 - Blur, movimentos contínuos e camadas decorativas mais pesadas são reduzidos no celular.
 
 ## Analytics
